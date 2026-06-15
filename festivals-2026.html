@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Festival Dossier 2026 — Roadtrip Genève</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;500;700&family=Familjen+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+:root{--lime:#c6ff3a;--magenta:#ff3ea5;--cyan:#3ad8ff;--amber:#ffb13a;--grey:#9aa39a;--good:#c6ff3a;--mid:#ffb13a;--bad:#ff5a5a;--r:13px}
+[data-theme="dark"]{--bg:#0b0d0c;--bg2:#1a1f1c;--bg3:#141816;--line:#343d35;--ink:#eef3ec;--muted:#9aa79a;--dim:#69746a;--accent:var(--lime);--shadow:0 10px 34px rgba(0,0,0,.5)}
+[data-theme="light"]{--bg:#f3f4ee;--bg2:#ffffff;--bg3:#e9ebe2;--line:#d4d9cd;--ink:#15201a;--muted:#566055;--dim:#9aa698;--accent:#2f7a00;--shadow:0 8px 24px rgba(60,80,40,.12);--lime:#3f8a00;--magenta:#cc1f76;--cyan:#0c8ab2;--amber:#b9760a;--grey:#7c867b;--good:#3a8200;--mid:#b9760a;--bad:#cc3535}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:'Familjen Grotesk',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+a{color:var(--cyan)}
+.app{display:grid;grid-template-columns:310px 1fr;min-height:100vh}
+aside{background:var(--bg2);border-right:1px solid var(--line);padding:18px;position:sticky;top:0;height:100vh;overflow-y:auto}
+main{padding:22px 26px 90px;min-width:0}
+@media(max-width:900px){.app{grid-template-columns:1fr}aside{position:fixed;left:0;top:0;width:86%;max-width:330px;z-index:200;transform:translateX(-100%);transition:transform .3s;box-shadow:var(--shadow)}aside.open{transform:translateX(0)}.burger{display:inline-flex!important}}
+.brand{font-family:'Anton',sans-serif;font-size:26px;text-transform:uppercase;line-height:.95}
+.brand .alt{color:transparent;-webkit-text-stroke:1.2px var(--magenta)}
+.tagline{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;margin:6px 0 14px}
+.sb-sect{border-top:1px solid var(--line);padding:14px 0}
+.sb-sect h3{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.leg-row{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:6px}
+.sw{width:12px;height:12px;border-radius:3px;flex:none}
+.leg-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px}
+label.ctl{display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:10px 0 4px}
+input[type=text],select{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--ink);padding:8px 10px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px}
+input[type=text]:focus,select:focus{outline:none;border-color:var(--accent)}
+.slider .v{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);float:right}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--line);border-radius:4px;margin:4px 0 2px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--bg2)}
+input[type=range]::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--accent);cursor:pointer;border:none}
+.seg{display:flex;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:3px}
+.seg button{flex:1;font-family:'JetBrains Mono',monospace;font-size:11px;padding:7px 4px;border:none;background:none;color:var(--muted);border-radius:6px;cursor:pointer}
+.seg button.on{background:var(--accent);color:var(--bg2);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-family:'JetBrains Mono',monospace;font-size:10px;padding:5px 9px;border:1px solid var(--line);border-radius:999px;color:var(--muted);cursor:pointer;user-select:none;background:var(--bg);transition:.15s}
+.chip:hover{color:var(--ink);border-color:var(--dim)}
+.chip.on{background:var(--chip-c,var(--accent));color:var(--bg2);border-color:var(--chip-c,var(--accent));font-weight:700}
+.chip.cat.on{background:var(--magenta);border-color:var(--magenta);color:#fff}
+.reset{width:100%;margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--magenta);background:none;border:1px solid var(--line);padding:8px;border-radius:8px;cursor:pointer}
+.reset:hover{border-color:var(--magenta)}
+.hidenote{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--dim);margin-top:10px;line-height:1.55}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.topbar h1{font-family:'Anton',sans-serif;font-weight:400;font-size:clamp(24px,4vw,40px);text-transform:uppercase}
+.topbar .sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.tb-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{font-family:'JetBrains Mono',monospace;font-size:11px;padding:8px 12px;border-radius:8px;border:1px solid var(--line);background:var(--bg2);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:var(--accent)}
+.btn.on{border-color:var(--accent);color:var(--accent)}
+.burger{display:none}
+.sortbar{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.sortbar .count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted)}
+.sortbar .count b{color:var(--accent)}
+#map{height:360px;border-radius:var(--r);border:1px solid var(--line);margin-bottom:18px;background:var(--bg3);position:relative;z-index:1;transition:height .25s}
+#map.full{height:82vh}
+[data-theme="dark"] .leaflet-tile{filter:invert(1) hue-rotate(180deg) brightness(1.08) contrast(1.1) saturate(.3)}
+[data-theme="light"] .leaflet-tile{filter:saturate(.45) brightness(1.0)}
+#tileDots{font-size:8px;letter-spacing:1px;color:var(--dim);font-family:'JetBrains Mono',monospace}
+.leaflet-container{background:var(--bg3)!important}
+.leaflet-popup-content-wrapper,.leaflet-tooltip.festip{background:var(--bg2);color:var(--ink);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.leaflet-popup-tip{background:var(--bg2)}
+.leaflet-tooltip.festip{padding:15px 19px;min-width:270px;max-width:370px;white-space:normal;font-weight:400;line-height:1.5}
+.leaflet-tooltip.festip::before{display:none}
+.pop b{display:block;font-family:'Familjen Grotesk',system-ui,sans-serif;font-weight:700;font-size:17px;letter-spacing:.01em;line-height:1.3;text-transform:none;color:var(--ink);margin-bottom:3px}
+.pop .l{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--muted);display:block;margin-top:6px;line-height:1.55}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(345px,1fr));gap:16px}
+.card{background:var(--bg2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;transition:.15s;position:relative}
+.card:hover{border-color:var(--dim);transform:translateY(-2px);box-shadow:var(--shadow)}
+.card.sel{border-color:var(--magenta);box-shadow:0 0 0 1px var(--magenta)}
+.card.pinned{border-top:2px solid var(--accent)}
+.cardtop{padding:16px 16px 12px;cursor:pointer}
+.cbx{position:absolute;top:13px;right:13px;width:22px;height:22px;border:1px solid var(--line);border-radius:6px;background:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;z-index:3}
+.card.sel .cbx{background:var(--magenta);border-color:var(--magenta);color:#fff}
+.fname{font-family:'Anton',sans-serif;font-size:22px;text-transform:uppercase;line-height:1;padding-right:34px}
+.floc{font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--ink);margin-top:6px}
+.fdate{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--cyan);margin-top:7px;display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.tag-conf{font-size:8.5px;background:rgba(120,200,80,.15);color:var(--lime);padding:1px 6px;border-radius:4px;font-weight:700}
+.scores{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.score{background:var(--bg2);padding:9px 6px;text-align:center}
+.score .sv{font-family:'Anton',sans-serif;font-size:20px;line-height:1}
+.score .sl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+.barwrap{padding:12px 16px}
+.bartitle{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px}
+.bartitle b{color:var(--ink)}
+.gbar{display:flex;height:8px;border-radius:5px;overflow:hidden;background:var(--bg)}
+.gbar i{display:block;height:100%}
+.meta{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 14px}
+.badge{font-family:'JetBrains Mono',monospace;font-size:9.5px;padding:3px 8px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
+.badge.b-cyan{border-color:var(--cyan);color:var(--cyan)}
+.badge.b-red{border-color:#7a4040;color:var(--bad)}
+.badge.b-lime{border-color:#4a7a2a;color:var(--lime)}
+.badge.b-amber{border-color:#7a6230;color:var(--amber)}
+.meteo{padding:0 16px 12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--amber)}
+.stars{display:flex;align-items:center;gap:4px;padding:0 0 10px}
+.stars span[data-r]{font-size:22px;line-height:1;color:var(--dim);cursor:pointer;transition:.1s}
+.stars span[data-r].on{color:#ffcf3a}
+.stars span[data-r]:hover{color:#ffcf3a;transform:scale(1.2)}
+.stars .slbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);margin-left:8px;text-transform:uppercase;letter-spacing:.08em}
+.card.rated{border-left:2px solid #ffcf3a}
+.detail{max-height:0;overflow:hidden;transition:max-height .35s}
+.card.open .detail{max-height:1800px}
+.detail-in{padding:14px 16px 18px;border-top:1px solid var(--line)}
+.dsect{margin-bottom:12px}
+.dsect h4{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--magenta);margin-bottom:6px}
+.dsect p{font-size:12.5px}.dsect .muted{color:var(--muted)}
+.budget-tbl{width:100%;border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:11px}
+.budget-tbl td{padding:3px 0;border-bottom:1px dashed var(--line);color:var(--muted)}
+.budget-tbl td:last-child{text-align:right;color:var(--ink)}
+.prosc{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:480px){.prosc{grid-template-columns:1fr}}
+.pro{color:var(--lime);font-size:12px}.con{color:var(--bad);font-size:12px}
+.warn{background:rgba(255,90,90,.08);border:1px solid #6a3030;border-radius:8px;padding:9px 11px;font-size:11.5px;color:#ff9a9a;margin-top:8px}
+details{margin-top:8px}summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan)}
+details p{font-size:12px;color:var(--muted);margin-top:6px}
+.srclink{font-family:'JetBrains Mono',monospace;font-size:10.5px}
+.exh{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--dim);text-align:center;padding:8px;letter-spacing:.08em;cursor:pointer}
+.card.open .exh{color:var(--accent)}
+.cmpbar{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(160%);background:var(--magenta);color:#fff;padding:11px 18px;border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;box-shadow:var(--shadow);z-index:4000;transition:transform .3s;display:flex;gap:14px;align-items:center}
+.cmpbar.show{transform:translateX(-50%) translateY(0)}
+.cmpbar .clear{opacity:.85;text-decoration:underline;font-size:11px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:5000;display:none;padding:20px;overflow:auto}
+.modal.show{display:block}
+.modal-in{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);max-width:1200px;margin:20px auto;padding:22px;position:relative}
+.modal h2{font-family:'Anton',sans-serif;font-size:28px;text-transform:uppercase;margin-bottom:8px}
+.modal .x{position:absolute;top:16px;right:18px;font-size:24px;cursor:pointer;color:var(--muted);background:none;border:none}
+.combo{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin:14px 0 18px}
+.combo .cb{background:var(--bg2);padding:13px 14px}
+.combo .cv{font-family:'Anton',sans-serif;font-size:24px;line-height:1}
+.combo .cl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:4px}
+.verdict{font-family:'JetBrains Mono',monospace;font-size:12px;padding:10px 13px;border-radius:9px;margin-bottom:16px;line-height:1.5}
+.verdict.ok{background:rgba(120,200,80,.1);border:1px solid #3a6a2a;color:var(--lime)}
+.verdict.ko{background:rgba(255,90,90,.1);border:1px solid #6a3030;color:#ff9a9a}
+.tl{margin:4px 0 18px;border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--bg2)}
+.tl-axis{display:grid;grid-template-columns:150px 1fr;gap:10px;margin-bottom:8px}
+.tl-months{position:relative;height:13px}
+.tl-month{position:absolute;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);transform:translateX(-50%)}
+.tl-row{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:10px;margin-bottom:7px}
+.tl-name{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-track{position:relative;height:22px;background:var(--bg3);border-radius:6px;overflow:hidden}
+.tl-bar{position:absolute;top:3px;height:16px;border-radius:5px;background:var(--accent);display:flex;align-items:center;padding:0 6px;font-family:'JetBrains Mono',monospace;font-size:9px;color:#0a0c0a;white-space:nowrap;overflow:hidden;min-width:26px}
+.tl-bar.ov{background:var(--magenta);color:#fff}
+.cal-axis{display:grid;grid-template-columns:160px 1fr;gap:10px;margin-bottom:8px}
+.cal-row{display:grid;grid-template-columns:160px 1fr;align-items:center;gap:10px;margin-bottom:6px}
+.cal-name{font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.25;overflow:hidden}
+.cal-name b{color:var(--ink);font-weight:700;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cal-name span{color:var(--muted);font-size:9px}
+.cal-track{display:flex;gap:1px;height:20px;background:var(--bg3);border-radius:5px;padding:2px;overflow:hidden}
+.cal-track .cell{flex:1;min-width:2px;border-radius:2px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:8.5px;color:rgba(10,12,10,.82);text-shadow:0 0 2px rgba(255,255,255,.45);overflow:hidden;line-height:1}
+.cal-row.hdr{margin-bottom:4px}
+.cal-row.hdr .cal-track{height:auto;background:transparent;padding:0 2px;overflow:visible}
+.cal-track.nums .dnum{flex:1;min-width:2px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--dim);line-height:1.4;overflow:visible;white-space:nowrap}
+.calhdr{position:sticky;top:0;z-index:3;background:var(--bg2);border-bottom:1px solid var(--line);padding-bottom:4px;margin-bottom:6px}
+.cal-track.nums .dnum.mo{color:var(--accent);font-weight:700}
+.cal-rows{position:relative}
+.cal-grid{position:absolute;top:0;bottom:0;left:calc(var(--calname,160px) + 10px);right:0;pointer-events:none;z-index:2}
+.cal-grid .gl{position:absolute;top:0;bottom:0}
+.cal-grid .gl.wk{width:1px;background:var(--line);opacity:.65}
+.cal-grid .gl.mo{width:2px;background:var(--accent);opacity:.7;margin-left:-1px}
+.cal-grid .gl-dispo{position:absolute;top:0;bottom:0;pointer-events:none}
+.cal-track .cell.wknd{background:rgba(120,140,110,0.08)}
+.dnum.wknd{background:rgba(120,140,110,0.08);border-radius:2px}
+#calwrap{border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:18px;background:var(--bg2)}
+#calwrap.full{position:fixed;inset:14px;z-index:6000;margin:0;overflow:auto;box-shadow:var(--shadow)}
+#calwrap.full #cal{max-height:none}
+.ptabs{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.ptab{font-family:'JetBrains Mono',monospace;font-size:11px;padding:6px 9px;border:1px solid var(--line);background:var(--bg);color:var(--muted);border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
+.ptab.on{background:var(--accent);color:var(--bg2);border-color:var(--accent);font-weight:700}
+.ptab.add{color:var(--accent);border-style:dashed}
+.ptab .px{font-size:13px;opacity:.7;cursor:pointer}
+.ptab .px:hover{opacity:1;color:var(--magenta)}
+.pname{width:100%;background:var(--bg);border:1px solid var(--line);color:var(--ink);padding:7px 9px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;margin-bottom:6px}
+#ratedToggle{background:linear-gradient(135deg,#ffd84a,#ff9f1a);color:#1c1505;border-color:#ffcf3a;font-weight:700;letter-spacing:.02em}
+#ratedToggle:hover{filter:brightness(1.07);border-color:#ffcf3a}
+#ratedToggle.on{box-shadow:0 0 0 2px var(--accent)}
+.calhead{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+#cal{max-height:440px;overflow:auto;--calname:160px}
+@media(max-width:600px){.cal-axis,.cal-row{grid-template-columns:104px 1fr}#cal{--calname:104px}}
+.cmp-wrap{overflow-x:auto}
+.cmp-tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.cmp-tbl th,.cmp-tbl td{padding:9px 11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.cmp-tbl th{font-family:'Anton',sans-serif;font-size:16px;text-transform:uppercase;position:sticky;top:0;background:var(--bg2)}
+.cmp-tbl td.rowlbl{font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);white-space:nowrap}
+.cmp-tbl td.best{color:var(--lime);font-weight:700}
+.cmp-tbl td.worst{color:var(--bad)}
+.empty{color:var(--muted);font-family:'JetBrains Mono',monospace;padding:50px;text-align:center;grid-column:1/-1}
+/* Sidebar sections repliables */
+.sb-toggle{cursor:pointer;display:flex;align-items:center;gap:6px;user-select:none}
+.sb-toggle .sa{font-size:10px;color:var(--dim);transition:transform .2s;margin-left:auto;flex:none}
+.sb-sect.collapsed .sa{transform:rotate(-90deg)}
+.sect-badge{font-family:'JetBrains Mono',monospace;font-size:9px;background:var(--accent);color:var(--bg2);border-radius:999px;padding:0 6px;line-height:16px;display:none;font-weight:700}
+.sect-badge.show{display:inline-block}
+.sb-body{overflow:hidden;max-height:2000px;transition:max-height .3s ease}
+.sb-sect.collapsed .sb-body{max-height:0!important}
+/* Calendrier interactif */
+.cal-meta{display:flex;align-items:center;gap:4px;margin-bottom:2px}
+.cal-cbx-btn{width:15px;height:15px;border:1px solid var(--line);border-radius:3px;background:var(--bg);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:9px;color:transparent;flex:none;transition:.12s}
+.cal-cbx-btn.on{background:var(--magenta);border-color:var(--magenta);color:#fff}
+.cal-mini-stars{display:inline-flex;gap:1px}
+.cal-mini-stars i{font-size:11px;color:var(--dim);cursor:pointer;line-height:1;font-style:normal;transition:.1s}
+.cal-mini-stars i.on{color:#ffcf3a}
+.cal-mini-stars i:hover{color:#ffcf3a;transform:scale(1.15)}
+.cal-row:not(.hdr){align-items:flex-start}
+/* ── Overlay mobile ── */
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:199;cursor:pointer}
+#overlay.show{display:block}
+@media(min-width:901px){#overlay{display:none!important}}
+/* ── Section sidebar colorée ── */
+#sect-search .sb-toggle{color:var(--cyan);border-left:2px solid var(--cyan);padding-left:9px}
+#sect-profil .sb-toggle{color:var(--magenta);border-left:2px solid var(--magenta);padding-left:9px}
+#sect-filtres .sb-toggle{color:var(--lime);border-left:2px solid var(--lime);padding-left:9px}
+#sect-legende .sb-toggle{color:var(--amber);border-left:2px solid var(--amber);padding-left:9px}
+.sb-sect.collapsed .sb-toggle{opacity:.6}
+/* ── Groupes de filtres ── */
+.flt-grp{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin:14px 0 7px;display:flex;align-items:center;gap:7px}
+.flt-grp::after{content:'';flex:1;height:1px;background:var(--line)}
+/* ── Select actif ── */
+select.has-val{border-color:var(--accent);color:var(--ink)}
+#q.has-val{border-color:var(--cyan)}
+/* ── Tooltip carte ── */
+.pop .sel-tip{display:block;font-size:9.5px;margin-top:6px;color:var(--magenta)}
+.pop .sel-tip.hint{color:var(--dim)}
+/* ── Map markers avec checkbox ── */
+.fmark-wrap{background:transparent!important;border:none!important;box-shadow:none!important}
+.fmark-chk{position:absolute;top:-5px;right:-5px;width:12px;height:12px;background:var(--magenta);border:1.5px solid #fff;border-radius:2px;font-size:8px;color:#fff;display:flex;align-items:center;justify-content:center;line-height:1;font-weight:700}
+/* ── Calendar date range picker ── */
+.dnum[data-doy]{cursor:pointer;border-radius:2px;transition:background .1s}
+.dnum[data-doy]:hover{background:rgba(198,255,58,.22)}
+.dnum.rng-s{background:var(--lime)!important;color:var(--bg2)!important;font-weight:700;border-radius:3px 0 0 3px}
+.dnum.rng-e{background:var(--lime)!important;color:var(--bg2)!important;font-weight:700;border-radius:0 3px 3px 0}
+.dnum.rng-s.rng-e{border-radius:3px}
+.dnum.rng-mid{background:rgba(198,255,58,.22)!important}
+.dnum.rng-hover{background:rgba(198,255,58,.12)!important}
+.cal-rng-area{display:flex;align-items:center;gap:8px;min-height:20px;margin-bottom:5px;flex-wrap:wrap}
+.cal-rng-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(198,255,58,.1);border:1px solid var(--lime);border-radius:999px;padding:3px 6px 3px 12px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--lime);animation:cmpTagIn .2s cubic-bezier(.34,1.56,.64,1)}
+.rp-x{cursor:pointer;font-size:14px;line-height:1;opacity:.6;padding:0 4px;border-radius:50%;transition:.15s;color:var(--muted)}
+.rp-x:hover{opacity:1;background:rgba(255,62,165,.25);color:var(--magenta)}
+.cal-rng-hint{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim)}
+.cal-rng-hint.rng-active{color:var(--amber)}
+.cal-row.dim-out{opacity:.15;transition:opacity .2s}
+</style>
+</head>
+<body>
+<div class="app">
+<aside id="sidebar">
+  <div class="brand">Festival<br><span class="alt">Dossier</span> 26</div>
+  <div class="tagline">Roadtrip Genève · juin→nov · 44 dates</div>
+
+  <div class="sb-sect" id="sect-search">
+    <h3 class="sb-toggle" data-sect="search">Recherche & tri<span class="sect-badge" id="badge-search"></span><span class="sa">▾</span></h3>
+    <div class="sb-body">
+    <input type="text" id="q" placeholder="nom, pays, artiste, genre...">
+    <label class="ctl">Trier par</label>
+    <select id="sort"><option value="match">Compatibilité musicale</option><option value="global">Note globale</option><option value="dist">Distance (proche→loin)</option><option value="budget">Budget (bas→haut)</option><option value="date">Date (tôt→tard)</option><option value="stars">Mon classement ★</option></select>
+    </div>
+  </div>
+
+  <div class="sb-sect collapsed" id="sect-profil">
+    <h3 class="sb-toggle" data-sect="profil">Profil de goûts<span class="sa">▾</span></h3>
+    <div class="sb-body">
+    <div id="profTabs" class="ptabs"></div>
+    <input id="profName" class="pname" type="text" placeholder="Nom de la personne">
+    <div id="weightWrap"></div>
+    <div class="hidenote" id="profNote"></div>
+    </div>
+  </div>
+
+  <div class="sb-sect collapsed" id="sect-filtres">
+    <h3 class="sb-toggle" data-sect="filtres">Filtres<span class="sect-badge" id="badge-filtres"></span><span class="sa">▾</span></h3>
+    <div class="sb-body">
+    <div class="flt-grp">🗓 Période</div>
+    <label class="ctl">Mois</label>
+    <select id="month"><option value="">Tous</option><option>Juin</option><option>Juillet</option><option>Août</option><option>Septembre</option><option>Octobre</option><option>Novembre</option></select>
+    <label class="ctl">Saison</label>
+    <select id="season"><option value="">Toutes</option><option value="été">Été (juin–août)</option><option value="arrière-saison">Arrière-saison (sept)</option><option value="automne">Automne (oct–nov)</option></select>
+    <div class="flt-grp">🏕 Format & lieu</div>
+    <label class="ctl">Type</label>
+    <select id="venue"><option value="">Tous</option><option value="outdoor">Outdoor</option><option value="indoor">Indoor / city</option></select>
+    <label class="ctl">Baignade</label>
+    <select id="swim"><option value="">Toutes</option><option value="oui">Oui (site)</option><option value="proche">Proche</option><option value="non">Aucune</option></select>
+    <label class="ctl">Commercial</label>
+    <select id="com"><option value="">Tous</option><option value="faible">Faible</option><option value="moyen">Moyen</option><option value="élevé">Élevé</option></select>
+    <div class="flt-grp">⭐ Mes choix</div>
+    <label class="ctl">Favoris ★</label>
+    <select id="starf"><option value="">Tous</option><option value="5">★★★★★ (5)</option><option value="4">★★★★ (4)</option><option value="3">★★★ (3)</option><option value="2">★★ (2)</option><option value="1">★ (1)</option></select>
+    <div class="flt-grp">🎯 Limites</div>
+    <label class="ctl slider">Distance A/R max <span class="v" id="distV">∞</span></label>
+    <input type="range" id="dist" min="600" max="4000" step="100" value="4000">
+    <label class="ctl slider">Budget max 2p <span class="v" id="budV">∞</span></label>
+    <input type="range" id="bud" min="600" max="2700" step="50" value="2700">
+    <label class="ctl slider">Compatibilité min <span class="v" id="matchV">0</span></label>
+    <input type="range" id="matchMin" min="0" max="95" step="5" value="0">
+    <div class="flt-grp">🎧 Musique</div>
+    <label class="ctl">Styles</label>
+    <div class="chips" id="genreChips"></div>
+    <label class="ctl" style="margin-top:10px">Catégories</label>
+    <div class="chips" id="catChips"></div>
+    <button class="reset" id="reset">↺ Réinitialiser</button>
+    <div class="hidenote">1 festival masqué : Son Libre (dates 2026 non confirmées).</div>
+    </div>
+  </div>
+
+  <div class="sb-sect collapsed" id="sect-legende">
+    <h3 class="sb-toggle" data-sect="legende">Légende — styles<span class="sa">▾</span></h3>
+    <div class="sb-body">
+    <div class="leg-grid" id="styleLegend"></div>
+    <h3 style="margin-top:14px">Scores</h3>
+    <div class="leg-row"><span class="sw" style="background:var(--good)"></span>≥ 80 · excellent</div>
+    <div class="leg-row"><span class="sw" style="background:var(--mid)"></span>60–79 · correct</div>
+    <div class="leg-row"><span class="sw" style="background:var(--bad)"></span>&lt; 60 · faible</div>
+    <div class="hidenote"><b style="color:var(--muted)">Compatibilité</b> = Σ(% style × poids du profil actif)/10, recalculée en direct. Styles détaillés <b style="color:var(--muted)">estimés par festival</b> (dub ≠ bass, acid ≠ techno…).<br><b style="color:var(--muted)">Global</b> = compromis goût + nature + budget + confort (pré-évalué, fixe).<br>🛏 couchage & ⚠ risque billetterie = indicatifs.</div>
+    </div>
+  </div>
+</aside>
+
+<main>
+  <div class="topbar">
+    <div>
+      <button class="btn burger" id="burger">☰ Filtres</button>
+      <h1>Festivals 2026</h1>
+      <div class="sub">44 festivals datés · départ Genève</div>
+    </div>
+    <div class="tb-actions">
+      <button class="btn" id="mapToggle">🗺️ Carte ＋</button>
+      <button class="btn" id="tileToggle">⊞ Positron 1/3</button>
+      <button class="btn" id="calToggle">📅 Calendrier ＋</button>
+      <button class="btn" id="themeToggle">🌗 Thème</button>
+    </div>
+  </div>
+  <div id="map"></div>
+  <div id="calwrap" style="display:none"><div class="calhead">📅 Calendrier — <span id="calcount"></span></div><div class="seg" id="calViewSeg" style="max-width:380px;margin-bottom:12px"><button data-cv="all" class="on">Tous</button><button data-cv="fav">Favoris ★</button><button data-cv="sel">Comparés ☑</button></div><div class="hidenote" style="margin-bottom:10px">🟢 MUST (20–26 juil) · 🟠 FORT (13–19 ou 27 juil–2 août)</div><div id="cal"></div></div>
+  <div class="sortbar">
+    <span class="count"><b id="cnt">44</b> affichés</span>
+    <button class="btn" id="ratedToggle">★ Favoris (0)</button>
+    <span class="sub" style="color:var(--dim)">· clique les ★ pour noter & classer · coche pour comparer ·</span>
+  </div>
+  <div class="grid" id="grid"></div>
+</main>
+</div>
+
+<div id="overlay"></div>
+<div class="cmpbar" id="cmpbar"><span id="cmpcount">Comparer (0)</span><span class="clear" id="cmpclear">vider</span></div>
+<div class="modal" id="modal"><div class="modal-in"><button class="x" id="modalX">×</button><h2>Comparatif & combo</h2><div id="comboBox"></div><div class="cmp-wrap"><table class="cmp-tbl" id="cmpTbl"></table></div></div></div>
+
+<script>
+const STY=[
+['dnb','Drum & Bass',10,6,'#c6ff3a'],
+['neuro','Neurofunk',10,5,'#8ee000'],
+['jungle','Jungle',8,5,'#49d96b'],
+['liquid','Liquid DnB',8,6,'#6effc0'],
+['dub','Dub / Sound-System',10,7,'#ff3ea5'],
+['bass','Dubstep / Bass',7,6,'#ff85c8'],
+['psy','Psytrance',8,9,'#3ad8ff'],
+['darkpsy','Darkpsy / Hi-Tech',8,7,'#5b8cff'],
+['forest','Forest',8,8,'#27c2b0'],
+['fullon','Full-On / Goa',6,7,'#86d4ff'],
+['acid','Acid',8,6,'#ffb13a'],
+['techno','Techno / Hard',8,7,'#ff7a2f'],
+['house','House',4,6,'#ffd84a'],
+['melodic','Techno mélodique',2,5,'#b59b7a'],
+['other','Autres',1,4,'#9aa39a']];
+const STYLE={},W0={toi:{},partner:{}};STY.forEach(([k,l,t,p,c])=>{STYLE[k]={l,c};W0.toi[k]=t;W0.partner[k]=p;});
+const CN={"🇨🇿":"Tchéquie","🇭🇷":"Croatie","🇮🇹":"Italie","🇳🇱":"Pays-Bas","🇧🇪":"Belgique","🇦🇹":"Autriche","🇩🇪":"Allemagne","🇫🇷":"France","🇪🇸":"Espagne","🇬🇷":"Grèce","🇬🇧":"Royaume-Uni","🇭🇺":"Hongrie","🇸🇮":"Slovénie","🇵🇱":"Pologne","🇨🇭":"Suisse"};
+const cv=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
+const MO={'Juin':151,'Juillet':181,'Août':212,'Septembre':243,'Octobre':273,'Novembre':304};
+
+const F=[
+{n:"Darkshire In The Woods",c:"🇨🇿",r:"Chotěvice, NE Bohême",gps:[50.502,15.776],date:"18–21 juin",month:"Juin",ds:18,dur:4,season:"été",venue:"outdoor",rt:2000,h:11,et:"1-2",
+ bk:{dnb:35,neuro:35,jungle:5,bass:15,dub:5,other:5},swim:"oui",swimT:"lac/site/✅/à-pied",com:"faible",size:"~3–4 000",scene:["DnB","Neuro","Bass"],cat:["A","F"],heat:false,sleep:"Camping prairie (zone festival + cabins SOLD-OUT) · hôtels Trutnov ~20min",risk:"élevé",
+ cadre:"Forêt + vallée, lac de baignade, 5 scènes (la plus grande 18×22 m)",meteo:"jour 20–24°C / nuit 10–13°C · averses possibles",
+ price:"~140€/pers",tot:"~1 250 €",budget:[["Billets (2)","280 €"],["Camping prairie","~40 €"],["Essence","380 €"],["Péages","70 €"],["Bouffe","280 €"],["Imprévus","200 €"]],
+ nat:82,bud:84,conf:70,glob:92,pros:"DnB/neuro massif · forêt + baignade · vraie rave underground (tél. off)",cons:"Mi-juin (tôt) · 11h · capacité réduite",
+ warn:"Camping festival + cabins SOLD-OUT — reste la prairie, réserver vite.",lineup:"Eatbrain · Blackout · 1985 Music · Tesseracts · Hospitality (Lake Stage, 30 ans)",src:"darkshire.cz",url:"https://darkshire.cz"},
+
+{n:"Hospitality On The Beach",c:"🇭🇷",r:"Tisno, The Garden Resort",gps:[43.80,15.64],date:"1–6 juillet",month:"Juillet",ds:1,dur:5,season:"été",venue:"outdoor",rt:2100,h:11,et:"1-2",
+ bk:{dnb:30,neuro:30,liquid:20,jungle:10,bass:10},swim:"oui",swimT:"mer/site/✅/à-pied",com:"moyen",size:"~5 000",scene:["DnB","Neuro","Liquid"],cat:["A","C","D"],heat:true,sleep:"Camping DnB · apparts & hôtels Tisno/Jezera (resort)",risk:"moyen",
+ cadre:"Plage privée Adriatique, 5 scènes côte à côte, boat parties, Barbarella's",meteo:"jour 28–31°C / nuit 21–24°C · sec · mer ~24°C",
+ price:"~290€/pers",tot:"~1 900 €",budget:[["Billets (2)","580 €"],["Logement","200 €"],["Essence","399 €"],["Péages","150 €"],["Bouffe","350 €"],["Imprévus","250 €"]],
+ nat:92,bud:58,conf:88,glob:88,pros:"DnB pur + baignade mer · sans ferry · HOSPITAL30",cons:"~290€/pers · logement cher juillet · 11h",
+ warn:"",lineup:"Andy C · Sub Focus · Calibre · Dillinja · Hazard · Ed Rush & Optical · A.M.C · 150+ artistes",src:"hospitalityonthebeach.com",url:"https://www.hospitalityonthebeach.com"},
+
+{n:"Sun and Bass",c:"🇮🇹",r:"San Teodoro, Sardaigne",gps:[40.78,9.67],date:"5–12 sept",month:"Septembre",ds:5,dur:8,season:"arrière-saison",venue:"outdoor",rt:900,h:5,et:"1",
+ bk:{dnb:30,jungle:25,liquid:25,neuro:10,dub:5,bass:5},swim:"oui",swimT:"mer/site/✅/à-pied",com:"faible",size:"~2 000",scene:["DnB","Jungle","Liquid"],cat:["A","D"],heat:true,sleep:"Apparts/hôtels San Teodoro (PAS de camping) · ferry obligatoire",risk:"moyen",
+ cadre:"Village méditerranéen, plage La Cinta, club Ambra Night (+ ferry)",meteo:"jour 27–29°C / nuit 19–21°C · sec · mer ~25°C",
+ price:"379€/pers",tot:"~2 450–2 650 €",budget:[["Billets (2)","758 €"],["Logement","700 €"],["Ferry","400–600 €"],["Essence","171 €"],["Bouffe/imprévus","400 €"]],
+ nat:90,bud:35,conf:80,glob:80,pros:"DnB pointu + plage de rêve · communauté 20+ ans",cons:"Cher + ferry + pas de camping = hors budget",
+ warn:"Dates : site=5–12, Insta=5–13 sept. Vente dès 26 mai 2026.",lineup:"Programmation DnB/jungle pointue (non commerciale)",src:"sunandbass.net",url:"https://sunandbass.net"},
+
+{n:"Liquicity Festival",c:"🇳🇱",r:"Geestmerambacht, Alkmaar",gps:[52.70,4.79],date:"24–26 juillet",month:"Juillet",ds:24,dur:3,season:"été",venue:"outdoor",rt:1800,h:9,et:"1-2",
+ bk:{liquid:55,dnb:25,jungle:10,neuro:5,other:5},swim:"proche",swimT:"plan-eau/proche/à confirmer/à-pied",com:"moyen",size:"grand",scene:["DnB","Liquid","Jungle"],cat:["A"],heat:false,sleep:"Camping festival · hôtels Alkmaar",risk:"moyen",
+ cadre:"Parc récréatif 500 acres avec plan d'eau, 10e anniversaire",meteo:"jour 21–24°C / nuit 13–15°C · averses possibles",
+ price:"~190€/pers",tot:"~1 320 €",budget:[["Billets (2)","380 €"],["Camping","80 €"],["Essence","342 €"],["Péages","90 €"],["Bouffe","250 €"],["Imprévus","180 €"]],
+ nat:70,bud:74,conf:75,glob:80,pros:"DnB liquide/émotionnel · super communauté · parc-lac",cons:"Peu de neurofunk · 9h, tout au nord · plus pop qu'underground",
+ warn:"DnB *liquide* — la compat famille-based te le note haut, mais c'est peu neuro.",lineup:"Netsky · Wilkinson · Andy C · Shy FX · Calibre · Culture Shock · Delta Heavy · S.P.Y",src:"festival.liquicity.com",url:"https://festival.liquicity.com"},
+
+{n:"Let It Roll",c:"🇨🇿",r:"Lake Most",gps:[50.52,13.62],date:"30 juil–1 août",month:"Juillet",ds:30,dur:3,season:"été",venue:"outdoor",rt:1740,h:8.5,et:"1",
+ bk:{dnb:35,neuro:25,jungle:15,liquid:10,bass:10,other:5},swim:"proche",swimT:"lac/proche/✅/à-pied",com:"moyen",size:"~30 000+",scene:["DnB","Neuro","Jungle"],cat:["A"],heat:false,sleep:"Camping + hôtels Most/Litvínov",risk:"moyen",
+ cadre:"Lac (site reconverti), Factory Stage neurofunk de retour 2026",meteo:"jour 24–27°C / nuit 14–16°C · orages possibles",
+ price:"~160€/pers",tot:"~1 170 €",budget:[["Billets (2)","320 €"],["Camping","40 €"],["Essence","331 €"],["Vignettes","56 €"],["Bouffe","250 €"],["Imprévus","170 €"]],
+ nat:55,bud:80,conf:78,glob:89,pros:"LE festival DnB mondial · prod ciné · ta référence",cons:"Déjà fait · cadre semi-industriel",
+ warn:"",lineup:"Chase & Status · Pendulum (live) · Sub Focus · Black Sun Empire · Eatbrain 15 ans · LTJ Bukem · S.P.Y",src:"letitroll.eu",url:"https://letitroll.eu"},
+
+{n:"Rampage Open Air",c:"🇧🇪",r:"Lommel, Kristalpark",gps:[51.21,5.30],date:"2–5 juillet",month:"Juillet",ds:2,dur:4,season:"été",venue:"outdoor",rt:1676,h:7.5,et:"1",
+ bk:{dnb:30,neuro:25,bass:30,jungle:5,dub:5,other:5},swim:"non",swimT:"aucune",com:"moyen",size:"très grand",scene:["DnB","Neuro","Dubstep"],cat:["A"],heat:false,sleep:"Camping inclus · hôtels Lommel/Eindhoven",risk:"moyen",
+ cadre:"Parc industriel, grande roue, skatepark — zéro nature",meteo:"jour 22–25°C / nuit 14–16°C · averses possibles",
+ price:"~170€/pers",tot:"~1 150 €",budget:[["Billets (2)","340 €"],["Essence","318 €"],["Péages","60 €"],["Bouffe","250 €"],["Imprévus","180 €"]],
+ nat:28,bud:72,conf:72,glob:74,pros:"Plus gros DnB+dubstep du monde · 8 scènes",cons:"Industriel · pas de baignade · pas underground",
+ warn:"",lineup:"Black Sun Empire · Mefjus · S.P.Y · Sub Focus · A.M.C · Camo & Krooked · Dimension",src:"rampage.eu",url:"https://rampage.eu"},
+
+{n:"Outback Festival",c:"🇦🇹",r:"Wiesen, Burgenland",gps:[47.741,16.338],date:"27–30 août",month:"Août",ds:27,dur:4,season:"été",venue:"outdoor",rt:1900,h:9.5,et:"1-2",
+ bk:{dnb:35,neuro:35,jungle:10,bass:10,dub:5,other:5},swim:"non",swimT:"aucune",com:"moyen",size:"moyen",scene:["DnB","Neuro","Bass"],cat:["A"],heat:false,sleep:"Camping · hôtels Wiener Neustadt",risk:"moyen",
+ cadre:"Plein air, site festival de Wiesen, open-air structuré",meteo:"jour 24–28°C / nuit 14–17°C · orages possibles",
+ price:"~140€/pers",tot:"~1 180 €",budget:[["Billets (2)","~280 €"],["Camping","incl"],["Essence","361 €"],["Vignettes","56 €"],["Bouffe","280 €"],["Imprévus","200 €"]],
+ nat:65,bud:70,conf:75,glob:82,pros:"DnB/neuro pur, gros line-up · rival direct de Hadra (fin août)",cons:"Pas de baignade · 9,5h · même week-end que Hadra",
+ warn:"Même dates que Hadra + Indian Spirit : tu ne peux en faire qu'un.",lineup:"A.M.C ft Phantom · Black Sun Empire · Culture Shock · Mefjus · 1991 · Flava D · Turno",src:"outback-festival.com",url:"https://www.outback-festival.com"},
+
+{n:"VooV Experience",c:"🇩🇪",r:"Putlitz, Brandenburg",gps:[53.248,12.041],date:"17–20 juillet",month:"Juillet",ds:17,dur:4,season:"été",venue:"outdoor",rt:2100,h:10.5,et:"1-2",
+ bk:{psy:45,fullon:25,darkpsy:10,techno:10,other:10},swim:"non",swimT:"aucune",com:"faible",size:"grand",scene:["Psytrance","Goa","Full-On"],cat:["B"],heat:false,sleep:"Camping (douches incluses) · chambres Pritzwalk",risk:"faible",
+ cadre:"Open-air allemand, classique psytrance historique (Hambourg–Berlin)",meteo:"jour 22–26°C / nuit 13–16°C · averses possibles",
+ price:"165€/pers",tot:"~1 270 €",budget:[["Billets (2)","330 €"],["Camping","incl"],["Essence","399 €"],["Péages","60 €"],["Bouffe","280 €"],["Imprévus","200 €"]],
+ nat:68,bud:70,conf:78,glob:78,pros:"Classique psy/goa solide, pas EDM mainstream · douches incluses",cons:"Zéro DnB · loin (10,5h)",
+ warn:"",lineup:"Ajja · Avalon · Electric Universe · GMS · Koxbox · Talamasca · Tristan · Tsuyoshi Suzuki",src:"voov-festival.de",url:"https://www.voov-festival.de"},
+
+{n:"Indian Spirit Festival",c:"🇩🇪",r:"Eldena, Meck-Vorpommern",gps:[53.232,11.416],date:"26–31 août",month:"Août",ds:26,dur:6,season:"été",venue:"outdoor",rt:2100,h:10.5,et:"1-2",
+ bk:{psy:45,fullon:25,darkpsy:10,techno:10,other:10},swim:"non",swimT:"aucune",com:"moyen",size:"très grand",scene:["Psytrance","Goa","Progressive"],cat:["B"],heat:false,sleep:"Camping · hôtels Ludwigslust",risk:"moyen",
+ cadre:"Prairie/open-air, gros festival psytrance allemand, plusieurs scènes",meteo:"jour 21–25°C / nuit 12–15°C · averses possibles",
+ price:"~150€/pers",tot:"~1 340 €",budget:[["Billets (2)","~300 €"],["Camping","incl"],["Essence","399 €"],["Péages","60 €"],["Bouffe","380 €"],["Imprévus","200 €"]],
+ nat:55,bud:62,conf:72,glob:74,pros:"Très gros line-up psy/goa, format complet",cons:"Plus commercial/large que Mo:Dem · zéro DnB · 10,5h",
+ warn:"Chevauche Hadra/Outback (fin août).",lineup:"Ace Ventura · Astral Projection · Atmos · Blastoyz · Captain Hook · Electric Universe · GMS",src:"indian-spirit.de",url:"https://www.indian-spirit.de"},
+
+{n:"Rampage Roadshow Toulouse",c:"🇫🇷",r:"Toulouse — Le Bikini",gps:[43.630,1.374],date:"28 août",month:"Août",ds:28,dur:1,season:"été",venue:"indoor",rt:1080,h:5.5,et:"0-1",
+ bk:{bass:40,dnb:30,neuro:20,jungle:5,other:5},swim:"non",swimT:"aucune",com:"moyen",size:"club",scene:["DnB","Dubstep","Bass"],cat:["A"],heat:true,sleep:"Hôtels Toulouse",risk:"faible",
+ cadre:"City-event / club + afterparty, pas un festival nature",meteo:"jour 28–32°C / nuit 18–21°C · sec/orageux",
+ price:"~90€/pers",tot:"~715 €",budget:[["Billets (2)","~180 €"],["Hôtel 1 nuit","120 €"],["Essence","205 €"],["Péages","50 €"],["Bouffe","80 €"],["Imprévus","80 €"]],
+ nat:5,bud:78,conf:80,glob:76,pros:"Très bon stop DnB/bass en France · proche (5,5h)",cons:"Pas camping, pas baignade · 1 jour",
+ warn:"",lineup:"Pendulum · Camo & Krooked · Zomboy · Eptic · Habstrakt · Modestep · The Clamps",src:"rampage.eu",url:"https://www.rampage.eu/news/rampage-roadshow-toulouse"},
+
+{n:"Liquicity Paris",c:"🇫🇷",r:"Le Kilowatt, Vitry/Paris",gps:[48.783,2.404],date:"29 août",month:"Août",ds:29,dur:1,season:"été",venue:"indoor",rt:1080,h:5.5,et:"0-1",
+ bk:{liquid:55,dnb:30,jungle:5,neuro:5,other:5},swim:"non",swimT:"aucune",com:"moyen",size:"club",scene:["DnB","Liquid","Dancefloor"],cat:["A"],heat:false,sleep:"Hôtels Paris/Vitry",risk:"faible",
+ cadre:"Event DnB urbain, soirée 17:00–02:00",meteo:"jour 24–28°C / nuit 15–18°C · variable",
+ price:"~60€/pers",tot:"~645 €",budget:[["Billets (2)","~120 €"],["Hôtel 1 nuit","120 €"],["Essence","205 €"],["Péages","50 €"],["Bouffe","80 €"],["Imprévus","70 €"]],
+ nat:5,bud:72,conf:85,glob:72,pros:"DnB propre, facile en city-trip · proche",cons:"Moins neuro/underground · pas camping · 1 jour",
+ warn:"",lineup:"n/c",src:"liquicity.com",url:"https://liquicity.com/events/liquicity-paris-2026/"},
+
+{n:"Breakin Science Amsterdam",c:"🇳🇱",r:"Amsterdam, multi-venues",gps:[52.367,4.904],date:"20–23 nov",month:"Novembre",ds:20,dur:4,season:"automne",venue:"indoor",rt:1660,h:8.5,et:"1",
+ bk:{dnb:40,jungle:25,neuro:15,bass:15,other:5},swim:"non",swimT:"aucune",com:"moyen",size:"weekender",scene:["DnB","Jungle","Bass"],cat:["A"],heat:false,sleep:"Hôtels Amsterdam (package weekender)",risk:"moyen",
+ cadre:"Weekender urbain indoor, clubs + boat party",meteo:"jour 7–10°C / nuit 3–6°C · pluvieux/froid",
+ price:"package",tot:"~1 315 €",budget:[["Billets (2)","~240 €"],["Hôtel 3 nuits","360 €"],["Essence","315 €"],["Bouffe","200 €"],["Imprévus","200 €"]],
+ nat:5,bud:52,conf:75,glob:68,pros:"Vrai créneau automne DnB · weekender complet",cons:"Amsterdam cher · zéro nature · froid",
+ warn:"",lineup:"n/c (packages clubs + boat party)",src:"breakinscienceamsterdam.com",url:"https://www.breakinscienceamsterdam.com"},
+
+{n:"Liquicity Vienna",c:"🇦🇹",r:"Vienne",gps:[48.208,16.373],date:"3 octobre",month:"Octobre",ds:3,dur:1,season:"automne",venue:"indoor",rt:1800,h:9,et:"1-2",
+ bk:{liquid:55,dnb:30,jungle:5,neuro:5,other:5},swim:"non",swimT:"aucune",com:"moyen",size:"club",scene:["DnB","Liquid","Dancefloor"],cat:["A"],heat:false,sleep:"Hôtels Vienne",risk:"faible",
+ cadre:"City-event indoor/club",meteo:"jour 15–19°C / nuit 7–10°C · variable",
+ price:"~50€/pers",tot:"~840 €",budget:[["Billets (2)","~100 €"],["Hôtel","200 €"],["Essence","342 €"],["Bouffe","100 €"],["Imprévus","100 €"]],
+ nat:5,bud:65,conf:82,glob:70,pros:"Bon plan automne DnB pour prolonger l'été",cons:"Pas festival nature · 1 jour · 9h",
+ warn:"",lineup:"n/c",src:"liquicity.com",url:"https://liquicity.com/events/"},
+
+{n:"Liquicity Hamburg",c:"🇩🇪",r:"Hambourg",gps:[53.551,9.994],date:"25 sept",month:"Septembre",ds:25,dur:1,season:"arrière-saison",venue:"indoor",rt:2000,h:10,et:"1-2",
+ bk:{liquid:55,dnb:30,jungle:5,neuro:5,other:5},swim:"non",swimT:"aucune",com:"moyen",size:"club",scene:["DnB","Liquid","Dancefloor"],cat:["A"],heat:false,sleep:"Hôtels Hambourg",risk:"faible",
+ cadre:"City-event indoor/club",meteo:"jour 16–20°C / nuit 9–12°C · variable/pluvieux",
+ price:"~50€/pers",tot:"~880 €",budget:[["Billets (2)","~100 €"],["Hôtel","200 €"],["Essence","380 €"],["Bouffe","100 €"],["Imprévus","100 €"]],
+ nat:5,bud:60,conf:82,glob:68,pros:"DnB automne propre",cons:"Loin (10h) · 1 jour",
+ warn:"",lineup:"n/c",src:"liquicity.com",url:"https://liquicity.com/events/"},
+
+{n:"Outlook Origins",c:"🇭🇷",r:"Tisno, The Garden Resort",gps:[43.80,15.64],date:"23–27 juillet",month:"Juillet",ds:23,dur:5,season:"été",venue:"outdoor",rt:2100,h:11,et:"1-2",
+ bk:{dub:35,bass:30,jungle:20,dnb:10,other:5},swim:"oui",swimT:"mer/site/✅/à-pied",com:"moyen",size:"~5 000",scene:["Dub","Bass","Jungle"],cat:["A","C","D"],heat:true,sleep:"Camping · apparts Tisno (resort)",risk:"moyen",
+ cadre:"Même site qu'Hospitality, culture sound-system UK",meteo:"jour 30–33°C / nuit 22–25°C · sec · mer ~25°C",
+ price:"~230€/pers",tot:"~1 780 €",budget:[["Billets (2)","460 €"],["Logement","200 €"],["Essence","399 €"],["Péages","150 €"],["Bouffe","350 €"],["Imprévus","220 €"]],
+ nat:90,bud:60,conf:82,glob:83,pros:"Dub/jungle/sound-system de référence · baignade mer",cons:"Plus dub/grime que DnB pur · reggae présent",
+ warn:"",lineup:"Goldie · Kode9 · Alix Perez · Fabio & Grooverider · Tim Reaper · DJ Storm · Iration Steppas",src:"ra.co",url:"https://ra.co/events/2302882"},
+
+{n:"Hadra Trance Festival",c:"🇫🇷",r:"Vieure, Allier",gps:[46.55,2.86],date:"27–30 août",month:"Août",ds:27,dur:4,season:"été",venue:"outdoor",rt:760,h:4,et:"0",
+ bk:{psy:40,acid:15,techno:10,dub:10,dnb:8,fullon:7,darkpsy:5,bass:5},swim:"oui",swimT:"lac/site/✅/à-pied",com:"faible",size:"~10 000",scene:["Psytrance","Acid","Dub"],cat:["B","C","D","E","F"],heat:true,sleep:"Camping inclus · gîtes & hôtels Moulins ~30min",risk:"moyen",
+ cadre:"Site 25 ha au bord d'un lac, 4 scènes dont Paradoxe (DnB/techno/dub/hi-tech)",meteo:"jour 26–30°C / nuit 14–17°C · sec/orageux · canicule possible",
+ price:"~105€/pers",tot:"~760–1 030 €",budget:[["Billets (2)","210 €"],["Camping","incl"],["Essence","144 €"],["Péages/vignette","73 €"],["Bouffe","250 €"],["Imprévus","150 €"]],
+ nat:88,bud:96,conf:80,glob:89,pros:"4h de Genève · baignade lac · scène Paradoxe (DnB/dub) · non commercial · budget imbattable",cons:"DnB minoritaire · psy dominant",
+ warn:"",lineup:"Programmation psy + Paradoxe (DnB/techno/dub/hi-tech) · 150+ artistes",src:"hadratrancefestival.net",url:"https://hadratrancefestival.net"},
+
+{n:"Mo:Dem Festival",c:"🇭🇷",r:"Donje Primišlje (Mrežnica)",gps:[45.23,15.55],date:"3–9 août",month:"Août",ds:3,dur:7,season:"été",venue:"outdoor",rt:1970,h:10,et:"1-2",
+ bk:{darkpsy:35,forest:30,psy:15,dub:12,techno:5,other:3},swim:"oui",swimT:"rivière/site/✅/à-pied",com:"faible",size:"~10 000",scene:["Psytrance","Darkpsy","Psydub"],cat:["B","D"],heat:true,sleep:"Camping inclus (capacité limitée, billets nominatifs)",risk:"élevé",
+ cadre:"Forêt dense + canyon de rivière cristalline, 3 scènes",meteo:"jour 29–33°C / nuit 17–20°C · sec · rivière fraîche",
+ price:"298€/pers",tot:"~1 760 €",budget:[["Billets (2)","596 €"],["Camping","incl"],["Essence","374 €"],["Vignettes","169 €"],["Bouffe","420 €"],["Imprévus","200 €"]],
+ nat:98,bud:65,conf:72,glob:85,pros:"Meilleure baignade festival d'Europe · psy/forest/psydub haut de gamme · sans sponsors",cons:"Zéro DnB · 298€/pers · 10h",
+ warn:"2026 = dernière année de la Hive Stage dans sa forme actuelle. Billets nominatifs limités.",lineup:"Programmation darkpsy/forest/hi-tech/psydub de pointe",src:"modemfestival.com",url:"https://modemfestival.com"},
+
+{n:"Masters of Puppets",c:"🇨🇿",r:"Bystřice nad Pernštejnem",gps:[49.52,16.26],date:"6–13 juillet",month:"Juillet",ds:6,dur:8,season:"été",venue:"outdoor",rt:2050,h:10.5,et:"1-2",
+ bk:{darkpsy:55,psy:25,techno:12,other:8},swim:"proche",swimT:"plan-eau/site/à confirmer/à-pied",com:"faible",size:"~4 000",scene:["Darkpsy","Hi-tech","Psycore"],cat:["B"],heat:false,sleep:"Camping inclus · navette officielle depuis Zurich",risk:"faible",
+ cadre:"Campagne tchèque, forêts, 3 scènes, 250+ artistes · navette officielle depuis Zurich",meteo:"jour 23–26°C / nuit 13–15°C · averses possibles",
+ price:"~150€/pers",tot:"~1 360 €",budget:[["Billets (2)","300 €"],["Camping","incl"],["Essence","390 €"],["Vignettes","120 €"],["Bouffe","350 €"],["Imprévus","200 €"]],
+ nat:80,bud:78,conf:65,glob:79,pros:"Plus gros darkpsy/hi-tech mondial · navette Zurich · sound-systems puissants",cons:"Darkpsy très dur · 8 j long · confort basique",
+ warn:"",lineup:"Absurdus · Necropsycho · Psynonima · Infra · 250+ artistes / 3 floors",src:"mastersofpuppets.net",url:"https://www.mastersofpuppets.net"},
+
+{n:"Own Spirit Festival",c:"🇪🇸",r:"Baldellou, Huesca",gps:[42.04,0.55],date:"2–7 sept",month:"Septembre",ds:2,dur:6,season:"arrière-saison",venue:"outdoor",rt:1460,h:7.5,et:"1",
+ bk:{psy:40,fullon:25,forest:15,darkpsy:8,techno:7,other:5},swim:"oui",swimT:"réservoir/site/✅/à-pied",com:"faible",size:"milliers",scene:["Psytrance","Full-On","Forest"],cat:["B","D","E"],heat:true,sleep:"Camping inclus · hôtels Lleida ~40min",risk:"faible",
+ cadre:"Réservoir Santa Ana entre montagnes et forêts, Temple of Frequencies",meteo:"jour 28–32°C / nuit 16–19°C · sec · peu d'ombre",
+ price:"~160€/pers",tot:"~1 240 €",budget:[["Billets (2)","320 €"],["Camping","incl"],["Essence","277 €"],["Péages","90 €"],["Bouffe","350 €"],["Imprévus","200 €"]],
+ nat:88,bud:80,conf:72,glob:82,pros:"Baignade réservoir + montagnes · plus proche que la Hongrie · non commercial",cons:"Zéro DnB · chaleur sèche · vibe healing/famille",
+ warn:"",lineup:"(passé) Ajja · Liquid Soul · Talamasca · Ace Ventura · Symbolic · Earthling",src:"ownspiritfestival.org",url:"https://www.ownspiritfestival.org"},
+
+{n:"Free Earth Festival",c:"🇬🇷",r:"Asprovalta",gps:[40.73,23.71],date:"24–30 août",month:"Août",ds:24,dur:7,season:"été",venue:"outdoor",rt:3900,h:21,et:"2-3",
+ bk:{psy:40,forest:25,techno:12,fullon:10,darkpsy:5,other:8},swim:"oui",swimT:"mer/site/✅/à-pied",com:"faible",size:"~5 000",scene:["Psytrance","Forest","Psy-techno"],cat:["B","C","D"],heat:true,sleep:"Camping inclus · hôtels Asprovalta",risk:"faible",
+ cadre:"Seul psytrance d'Europe sur la plage (mer Égée), 3 scènes",meteo:"jour 30–34°C / nuit 21–24°C · sec · mer ~26°C",
+ price:"~135€/pers",tot:"~1 900 €+",budget:[["Billets (2)","270 €"],["Camping","incl"],["Essence","741 €"],["Ferry/Balkans","250 €"],["Bouffe","350 €"],["Imprévus","300 €"]],
+ nat:95,bud:38,conf:65,glob:70,pros:"Psytrance + mer Égée",cons:"Beaucoup trop loin (3900 km, 21h) · 741€ d'essence · ferry/Balkans",
+ warn:"Réservé à un grand voyage dédié.",lineup:"Enlightenment (full-on) · Parvati (forest) · Oxygen (psy-techno/downtempo)",src:"freeearth-festival.com",url:"https://freeearth-festival.com"},
+
+{n:"Boomtown Fair",c:"🇬🇧",r:"Matterley Estate, Winchester",gps:[51.09,-1.25],date:"12–16 août",month:"Août",ds:12,dur:5,season:"été",venue:"outdoor",rt:2200,h:13,et:"2",
+ bk:{dub:25,bass:20,dnb:15,jungle:5,other:35},swim:"non",swimT:"aucune",com:"moyen",size:"~70 000",scene:["Dub","Bass","DnB"],cat:["A","C"],heat:false,sleep:"Camping + glamping · hôtels Winchester",risk:"moyen",
+ cadre:"Vallée verdoyante, festival théâtral/immersif (+ Manche)",meteo:"jour 20–23°C / nuit 12–15°C · pluie probable",
+ price:"~330€/pers",tot:"~1 900 €+",budget:[["Billets (2)","660 €"],["Camping","incl"],["Essence+Manche","600 €"],["Bouffe","350 €"],["Imprévus","300 €"]],
+ nat:48,bud:48,conf:60,glob:63,pros:"Gros pôle dub/sound-system + DnB · immersif",cons:"Manche + conduite à gauche · coût · beaucoup de non-électro",
+ warn:"Hors scope roadtrip voiture facile.",lineup:"Programmation dub/bass/DnB/reggae multi-scènes",src:"boomtownfair.co.uk",url:"https://www.boomtownfair.co.uk"},
+
+{n:"Ozora Festival",c:"🇭🇺",r:"Dádpuszta",gps:[46.75,18.40],date:"24 juil–4 août",month:"Juillet",ds:24,dur:12,season:"été",venue:"outdoor",rt:2400,h:12,et:"2",
+ bk:{psy:45,fullon:15,techno:12,darkpsy:10,other:18},swim:"proche",swimT:"ruisseau/proche/✅/à-pied",com:"faible",size:"~30 000",scene:["Psytrance","Progressive","Downtempo"],cat:["B"],heat:true,sleep:"Camping inclus (comfort camping dispo)",risk:"moyen",
+ cadre:"Collines, champs, forêt · gathering psytrance iconique",meteo:"jour 28–33°C / nuit 17–20°C · sec · chaud",
+ price:"~290€/pers",tot:"~1 810 €",budget:[["Billets (2)","580 €"],["Camping","incl"],["Essence","456 €"],["Vignettes","120 €"],["Bouffe","400 €"],["Imprévus","250 €"]],
+ nat:80,bud:60,conf:70,glob:78,pros:"Mecque du psytrance (surtout sans Boom 2026) · non commercial",cons:"Très loin (12h) et long · peu de DnB",
+ warn:"N'est PAS commercial — vrai frein = distance + peu de DnB.",lineup:"Main psytrance · Dome ambient · Pumpui techno · Dragon Nest live",src:"ozorafestival.eu",url:"https://ozorafestival.eu"},
+
+{n:"Fusion Festival",c:"🇩🇪",r:"Lärz, Mecklembourg",gps:[53.31,12.75],date:"24–28 juin",month:"Juin",ds:24,dur:5,season:"été",venue:"outdoor",rt:2050,h:10,et:"1-2",
+ bk:{techno:25,other:20,dnb:15,dub:10,bass:10,house:10,psy:5,melodic:5},swim:"proche",swimT:"lac/proche/✅/voiture",com:"faible",size:"~70 000",scene:["Techno","DnB","Dub"],cat:["C"],heat:false,sleep:"Camping inclus",risk:"élevé",
+ cadre:"Ancien aérodrome, lacs du Mecklembourg · « Burning Man européen »",meteo:"jour 21–24°C / nuit 12–15°C · averses possibles",
+ price:"~175€/pers",tot:"~1 450 €",budget:[["Billets (2)","350 €"],["Camping","incl"],["Essence","390 €"],["Péages","60 €"],["Bouffe","350 €"],["Imprévus","250 €"]],
+ nat:62,bud:70,conf:60,glob:71,pros:"Ambiance la plus alternative d'Europe · multi-genre dont DnB/dub",cons:"Billets par TIRAGE AU SORT (quasi impossible) · 10h · DnB dilué",
+ warn:"Billetterie loterie très difficile pour les nouveaux venus.",lineup:"Multi-genre underground (no-photo)",src:"fusion-festival.de",url:"https://www.fusion-festival.de"},
+
+{n:"S.U.N. Festival",c:"🇭🇺",r:"Csobánkapuszta",gps:[47.95,19.30],date:"13–19 juillet",month:"Juillet",ds:13,dur:7,season:"été",venue:"outdoor",rt:2400,h:12,et:"2",
+ bk:{psy:30,forest:25,darkpsy:20,fullon:10,other:15},swim:"proche",swimT:"à confirmer/proche/à confirmer",com:"faible",size:"milliers",scene:["Goa","Forest","Darkpsy"],cat:["B"],heat:true,sleep:"Camping inclus",risk:"faible",
+ cadre:"Vallée boisée du Cserhát, ex-membres d'Ozora",meteo:"jour 27–31°C / nuit 16–19°C · sec",
+ price:"~165€/pers",tot:"~1 500 €",budget:[["Billets (2)","330 €"],["Camping","incl"],["Essence","456 €"],["Vignettes","120 €"],["Bouffe","380 €"],["Imprévus","220 €"]],
+ nat:78,bud:70,conf:64,glob:73,pros:"Version intime/pointue d'Ozora · old-school Goa + forest",cons:"Très loin (12h) · zéro DnB · baignade incertaine",
+ warn:"",lineup:"Goa/forest/darkpsy/hi-tech/ambient",src:"sunfestival.hu",url:"https://sunfestival.hu"},
+
+{n:"Drops Festival",c:"🇸🇮",r:"Tenetiše (près de Kranj)",gps:[46.27,14.40],date:"11–16 août",month:"Août",ds:11,dur:6,season:"été",venue:"outdoor",rt:1650,h:8.5,et:"1",
+ bk:{forest:30,psy:30,techno:20,darkpsy:10,other:10},swim:"non",swimT:"lac/proche/❌ interdite/voiture",com:"faible",size:"intime",scene:["Forest","Psytrance","Techno"],cat:["B","E","F"],heat:false,sleep:"Camping inclus",risk:"faible",
+ cadre:"Prairie en forêt (Udinboršt), lac à 5 min",meteo:"jour 25–29°C / nuit 13–16°C · orages alpins possibles",
+ price:"~120€/pers",tot:"~920–1 100 €",budget:[["Billets (2)","250 €"],["Camping","incl"],["Essence","314 €"],["Vignettes","96 €"],["Bouffe","250 €"],["Imprévus","150 €"]],
+ nat:72,bud:88,conf:72,glob:79,pros:"Joli cadre forêt, intime, underground · budget bas",cons:"Baignade INTERDITE · zéro DnB",
+ warn:"Baignade au lac interdite (zone protégée).",lineup:"Forest psy · techno · IDM · experimental",src:"@drops_fest",url:"https://www.instagram.com/drops_fest"},
+
+{n:"Beats for Love",c:"🇨🇿",r:"Ostrava, Dolní Vítkovice",gps:[49.82,18.27],date:"1–4 juillet",month:"Juillet",ds:1,dur:4,season:"été",venue:"outdoor",rt:2300,h:11,et:"1-2",
+ bk:{other:35,house:25,techno:22,dnb:18},swim:"non",swimT:"aucune",com:"élevé",size:"très grand",scene:["EDM","House","Techno"],cat:[],heat:false,sleep:"Camping payant · hôtels Ostrava",risk:"moyen",
+ cadre:"Ancien complexe sidérurgique — industriel",meteo:"jour 23–26°C / nuit 14–16°C · averses possibles",
+ price:"~150€/pers",tot:"~1 500 €",budget:[["Billets (2)","300 €"],["Camping","60 €"],["Essence","437 €"],["Vignettes","120 €"],["Bouffe","250 €"],["Imprévus","200 €"]],
+ nat:12,bud:55,conf:62,glob:47,pros:"18 scènes · DnB présent",cons:"EDM mainstream dominant · industriel · très commercial · loin",
+ warn:"À ÉVITER : EDM grand public (Calvin Harris, Marshmello), l'opposé de l'underground.",lineup:"Calvin Harris · Charlotte de Witte · Alesso · Marshmello · (DnB : Dimension, Andromedik)",src:"b4l.cz",url:"https://www.b4l.cz"},
+
+{n:"Garbicz Festival",c:"🇵🇱",r:"Garbicz/Torzym",gps:[52.28,15.18],date:"30 juil–3 août",month:"Juillet",ds:30,dur:5,season:"été",venue:"outdoor",rt:2350,h:11,et:"1-2",
+ bk:{house:35,melodic:35,techno:20,other:10},swim:"oui",swimT:"lac/site/✅/à-pied",com:"faible",size:"moyen",scene:["House","Techno mélodique","Deep house"],cat:["D"],heat:false,sleep:"Camping inclus",risk:"moyen",
+ cadre:"Réserve naturelle, lac cristallin, forêt — cadre superbe",meteo:"jour 24–27°C / nuit 14–16°C · averses possibles",
+ price:"~200€/pers",tot:"~1 450 €",budget:[["Billets (2)","400 €"],["Camping","incl"],["Essence","447 €"],["Péages","60 €"],["Bouffe","350 €"],["Imprévus","200 €"]],
+ nat:95,bud:62,conf:72,glob:58,pros:"Lac de baignade magnifique, forêt",cons:"House/techno mélodique = tes notes les plus basses · zéro DnB/psy · 11h",
+ warn:"À ÉVITER malgré le cadre : le son est ce que tu apprécies le moins.",lineup:"House/techno mélodique (collectifs berlinois Bachstelzen/Holzmarkt)",src:"garbiczfestival.com",url:"https://garbiczfestival.com"},
+
+{n:"Subset Festival",c:"🇨🇭",r:"Wettingen (Zurich)",gps:[47.466,8.316],date:"10–11 juillet",month:"Juillet",ds:10,dur:2,season:"été",venue:"outdoor",rt:540,h:3,et:"0",
+ bk:{dnb:35,liquid:35,jungle:10,neuro:10,other:10},swim:"proche",swimT:"rivière/proche/à confirmer/à-pied",com:"moyen",size:"moyen",scene:["DnB","Liquid","Dancefloor"],cat:["A","E","F"],heat:false,sleep:"Hôtels région Zurich/Baden",risk:"faible",
+ cadre:"Festival DnB suisse près de Zurich (Limmat), 2 jours",meteo:"jour 22–26°C / nuit 13–16°C · averses possibles",
+ price:"~100€/pers",tot:"~620 €",budget:[["Billets (2)","200 €"],["Logement","120 €"],["Essence","103 €"],["Bouffe","120 €"],["Imprévus","80 €"]],
+ nat:42,bud:88,conf:75,glob:80,pros:"DnB à ~3h de Genève, ultra accessible · budget mini",cons:"Court (2j) · liquid/dancefloor peu neuro · cadre urbain",
+ warn:"",lineup:"n/c — scène DnB/liquid suisse",src:"subset-festival.com",url:"https://www.subset-festival.com/"},
+
+{n:"Burning Mountain Festival",c:"🇨🇭",r:"Zernez (Engadine)",gps:[46.697,10.092],date:"25–28 juin",month:"Juin",ds:25,dur:4,season:"été",venue:"outdoor",rt:840,h:5,et:"1",
+ bk:{psy:45,techno:25,fullon:15,darkpsy:5,other:10},swim:"proche",swimT:"lac/proche/à confirmer/voiture",com:"faible",size:"petit-moyen",scene:["Psytrance","Progressive","Techno"],cat:["B","E"],heat:false,sleep:"Camping · hôtels Zernez/Engadine",risk:"faible",
+ cadre:"Psytrance en pleine Engadine alpine (~1500m), cadre montagne",meteo:"jour 16–21°C / nuit 5–9°C · frais, variable (altitude)",
+ price:"~120€/pers",tot:"~750 €",budget:[["Billets (2)","240 €"],["Camping","incl"],["Essence","160 €"],["Bouffe","200 €"],["Imprévus","150 €"]],
+ nat:85,bud:80,conf:65,glob:80,pros:"Psytrance en Engadine alpine (~5h) · cadre montagne spectaculaire",cons:"Nuits froides (altitude) · psy/techno, zéro DnB",
+ warn:"Altitude : prévoir duvet chaud même en juin.",lineup:"Psytrance/progressive/techno (scène alpine)",src:"Burning Mountain ↗",url:"https://www.google.com/search?q=Burning+Mountain+Festival+2026+Zernez"},
+
+{n:"Reisefieber Festival XX",c:"🇨🇭",r:"Jura suisse",gps:[47.24,7.00],date:"3–5 juillet",month:"Juillet",ds:3,dur:3,season:"été",venue:"outdoor",rt:360,h:2.5,et:"0",
+ bk:{psy:50,fullon:25,darkpsy:10,techno:10,other:5},swim:"proche",swimT:"rivière/proche/à confirmer/voiture",com:"faible",size:"petit",scene:["Psytrance","Full-On","Progressive"],cat:["B","E","F"],heat:false,sleep:"Camping inclus",risk:"faible",
+ cadre:"Petit psytrance intime dans le Jura suisse",meteo:"jour 20–24°C / nuit 10–13°C · variable",
+ price:"~80€/pers",tot:"~480 €",budget:[["Billets (2)","160 €"],["Camping","incl"],["Essence","68 €"],["Bouffe","150 €"],["Imprévus","100 €"]],
+ nat:75,bud:92,conf:60,glob:79,pros:"Le plus proche (~2,5h) · psy suisse intime · budget mini",cons:"Petit, confort basique · zéro DnB",
+ warn:"Localisation Jura à préciser (GPS approximatif).",lineup:"Psytrance/full-on/progressive",src:"Reisefieber ↗",url:"https://www.google.com/search?q=Reisefieber+Festival+2026"},
+
+{n:"Dub Station Festival",c:"🇫🇷",r:"Vitrolles (Provence)",gps:[43.46,5.25],date:"26–27 juin",month:"Juin",ds:26,dur:2,season:"été",venue:"outdoor",rt:880,h:4.5,et:"0-1",
+ bk:{dub:75,bass:15,other:10},swim:"proche",swimT:"mer/proche/à confirmer/voiture",com:"moyen",size:"grand",scene:["Dub","Sound-System"],cat:["C","E"],heat:true,sleep:"Camping · hôtels Vitrolles/Marseille",risk:"faible",
+ cadre:"Festival sound-system dub de référence (Provence)",meteo:"jour 28–32°C / nuit 18–21°C · sec/mistral",
+ price:"~70€/pers",tot:"~640 €",budget:[["Billets (2)","140 €"],["Logement/camping","120 €"],["Essence","167 €"],["Bouffe","120 €"],["Imprévus","90 €"]],
+ nat:45,bud:86,conf:70,glob:78,pros:"Sound-system dub de référence (~4,5h) · proche, pas cher",cons:"Court (2j) · ratio reggae-MC à vérifier",
+ warn:"Vérifier le ratio reggae-MC/roots (peut tirer vers le babos).",lineup:"Sound-systems dub/steppa (à confirmer)",src:"Dub Station ↗",url:"https://www.google.com/search?q=Dub+Station+Festival+2026+Vitrolles"},
+
+{n:"Alive Dub Festival",c:"🇫🇷",r:"Loire",gps:[45.74,4.23],date:"2–4 octobre",month:"Octobre",ds:2,dur:3,season:"automne",venue:"outdoor",rt:520,h:3,et:"0",
+ bk:{dub:70,bass:10,other:20},swim:"non",swimT:"aucune (octobre)",com:"faible",size:"moyen",scene:["Dub","Roots","Sound-System"],cat:["C","F"],heat:false,sleep:"Camping · gîtes Loire",risk:"faible",
+ cadre:"Dub/roots sound-system, prolonge la saison en automne",meteo:"jour 16–20°C / nuit 8–11°C · frais/variable",
+ price:"~70€/pers",tot:"~540 €",budget:[["Billets (2)","140 €"],["Camping/gîte","100 €"],["Essence","99 €"],["Bouffe","120 €"],["Imprévus","80 €"]],
+ nat:50,bud:85,conf:68,glob:72,pros:"Dub/roots proche · prolonge la saison (oct)",cons:"Roots-heavy (risque babos) · octobre = froid, pas de baignade",
+ warn:"Roots/reggae dominant — vérifie que ça matche ton goût dub.",lineup:"Roots/dub sound-systems",src:"Alive Dub ↗",url:"https://www.google.com/search?q=Alive+Dub+Festival+2026"},
+
+{n:"7 Chakras Festival",c:"🇮🇹",r:"Tuscania (Lazio)",gps:[42.42,11.87],date:"14–20 juillet",month:"Juillet",ds:14,dur:7,season:"été",venue:"outdoor",rt:1500,h:7.5,et:"1",
+ bk:{psy:40,darkpsy:25,techno:25,acid:5,other:5},swim:"proche",swimT:"lac/proche/✅/voiture",com:"faible",size:"moyen",scene:["Psytrance","Darkpsy","Tekno"],cat:["B"],heat:true,sleep:"Camping inclus",risk:"faible",
+ cadre:"Psy/darkpsy/tekno en Lazio (Lago di Bolsena ~30min)",meteo:"jour 30–34°C / nuit 18–21°C · sec/chaud",
+ price:"~120€/pers",tot:"~1 100 €",budget:[["Billets (2)","240 €"],["Camping","incl"],["Essence","285 €"],["Bouffe (7j)","350 €"],["Imprévus","180 €"]],
+ nat:75,bud:75,conf:60,glob:74,pros:"Psy/darkpsy/tekno · 7 jours · lac proche",cons:"Chaleur Lazio · zéro DnB · ~7,5h",
+ warn:"",lineup:"Psytrance/darkpsy/tekno",src:"7 Chakras ↗",url:"https://www.google.com/search?q=7+Chakras+Festival+2026+Tuscania"},
+
+{n:"Pietra Sonica Festival",c:"🇮🇹",r:"Osoppo (Frioul)",gps:[46.25,13.08],date:"6–9 août",month:"Août",ds:6,dur:4,season:"été",venue:"outdoor",rt:1200,h:6.5,et:"1",
+ bk:{psy:40,acid:25,techno:25,darkpsy:5,other:5},swim:"proche",swimT:"rivière/proche/à confirmer/à-pied",com:"faible",size:"moyen",scene:["Psytrance","Acid","Tekno"],cat:["B","E"],heat:true,sleep:"Camping inclus",risk:"faible",
+ cadre:"Psy/acid/tekno en Frioul, près du Tagliamento",meteo:"jour 28–32°C / nuit 17–20°C · sec, orages possibles",
+ price:"~90€/pers",tot:"~830 €",budget:[["Billets (2)","180 €"],["Camping","incl"],["Essence","228 €"],["Bouffe","250 €"],["Imprévus","150 €"]],
+ nat:70,bud:82,conf:62,glob:73,pros:"Psy/acid/tekno en Frioul (~6,5h) · rivière · plus proche que la Hongrie",cons:"Zéro DnB · confort basique",
+ warn:"",lineup:"Psytrance/acid/tekno",src:"Pietra Sonica ↗",url:"https://www.google.com/search?q=Pietra+Sonica+Festival+2026+Osoppo"},
+
+{n:"Paléo Festival",c:"🇨🇭",r:"Nyon, Plaine de l'Asse",gps:[46.398,6.218],date:"21–26 juillet",month:"Juillet",ds:21,dur:6,season:"été",venue:"outdoor",rt:60,h:0.5,et:"0",
+ bk:{other:80,techno:5,house:5,dnb:5,dub:5},swim:"proche",swimT:"lac Léman/proche/✅/voiture",com:"élevé",size:"~250 000",scene:["Pop/Rock","World","Électro"],cat:["E"],heat:false,sleep:"Domicile / hôtels Nyon-Genève (~30 min de chez toi)",risk:"élevé",
+ cadre:"Plus grand open air de Suisse, Plaine de l'Asse · lac Léman à proximité",meteo:"jour 24–28°C / nuit 14–17°C · variable",
+ price:"~75 CHF/jour",tot:"~510 €",budget:[["Billets (2, ~2 soirs)","300 €"],["Essence","12 €"],["Bouffe","120 €"],["Imprévus","80 €"]],
+ nat:40,bud:85,conf:82,glob:45,pros:"À 30 min de chez toi · lac à proximité · déjà testé",cons:"Mainstream/commercial, hors profil électro · billets très durs à avoir (sold-out express)",
+ warn:"Hors profil électro — repère local (déjà fait). Billetterie sold-out en heures (vente 25 mars 2026).",lineup:"Grand public multi-genres : Katy Perry, Gorillaz, The Cure, Lorde, Twenty One Pilots, Orelsan, Gims…",src:"paleo.ch",url:"https://yeah.paleo.ch"},
+
+{n:"Dub Camp Festival",c:"🇫🇷",r:"Joué-sur-Erdre (Lac de Vioreau)",gps:[47.45,-1.50],date:"10–12 juillet",month:"Juillet",ds:10,dur:3,season:"été",venue:"outdoor",rt:1660,h:8.5,et:"1-2",
+ bk:{dub:50,bass:10,other:40},swim:"oui",swimT:"lac/site/à confirmer/à-pied",com:"faible",size:"~milliers",scene:["Dub","Sound-System","Roots"],cat:[],heat:false,sleep:"Camping + parking gratuits (hors Zen Camp premium)",risk:"moyen",
+ cadre:"Site naturel au bord du lac de Vioreau, multi-scènes sound-system",meteo:"jour 22–28°C / nuit 13–17°C · sec, averses possibles",
+ price:"~129€/pers",tot:"~1 000 €",budget:[["Billets (2)","258 €"],["Camping","gratuit"],["Essence","315 €"],["Péages","80 €"],["Bouffe","200 €"],["Imprévus","150 €"]],
+ nat:88,bud:80,conf:72,glob:68,pros:"Cadre lac + baignade · camping/parking gratuits · sound-system",cons:"Roots/reggae avant tout · zéro DnB/neuro · ~8,5h",
+ warn:"Identité roots/reggae/MC très marquée (cliché 'babos') — le dub instrumental ne domine pas tout. À tester.",lineup:"Stand High Patrol · Blackboard Jungle · OBF · Skarra Mucci × Manudigital · ~50 crews",src:"dubcampfestival.com",url:"https://www.dubcampfestival.com"},
+
+{n:"Spirit Base Festival",c:"🇨🇿",r:"Výrovice, Moravie du Sud",gps:[48.91,16.03],date:"11–14 juin",month:"Juin",ds:11,dur:4,season:"été",venue:"outdoor",rt:1800,h:10,et:"1-2",
+ bk:{psy:45,darkpsy:20,forest:15,fullon:10,techno:5,other:5},swim:"oui",swimT:"réservoir/site/à confirmer/à-pied",com:"faible",size:"petit-moyen",scene:["Psytrance","Darkpsy","Forest"],cat:[],heat:false,sleep:"Camping sur site (Autokemp Výr)",risk:"faible",
+ cadre:"Camping au bord d'un plan d'eau, ambiance psy intime",meteo:"jour 20–27°C / nuit 11–15°C · sec à orageux",
+ price:"~90€/pers",tot:"~1 100 €",budget:[["Billets (2)","180 €"],["Camping","incl"],["Essence","342 €"],["Vignettes","120 €"],["Bouffe","280 €"],["Imprévus","180 €"]],
+ nat:80,bud:78,conf:62,glob:72,pros:"Underground · baignade · cosy · prix doux",cons:"Loin (~10h) · petit line-up · zéro DnB",
+ warn:"",lineup:"Braincell · Whiptongue · Dust · Synkronic · Diksha · Sychotria",src:"@spiritbase_festival",url:"https://www.facebook.com/SpiritBaseFestival"},
+
+{n:"Shankra Festival",c:"🇨🇭",r:"Lostallo, Val Mesolcina (Grisons)",gps:[46.31,9.22],date:"~2–6 juil (est.)",month:"Juillet",ds:2,dur:5,season:"été",venue:"outdoor",rt:680,h:3.5,et:"0-1",
+ bk:{psy:35,forest:15,darkpsy:15,fullon:15,techno:5,dub:5,other:10},swim:"oui",swimT:"rivière/proche/à confirmer/à-pied",com:"faible",size:"~10 000",scene:["Psytrance","Forest","Psy-Dub"],cat:[],heat:false,sleep:"Camping inclus · hôtels Mesolcina/Bellinzona 20–40min",risk:"élevé",
+ cadre:"Vallée alpine encaissée (montagnes + forêt), rivière Moesa, 3 scènes",meteo:"jour 22–28°C / nuit 12–16°C · sec, orages de montagne possibles",
+ price:"~150–180€/pers",tot:"~1 050 €",budget:[["Billets (2)","330 €"],["Camping","incl"],["Essence","129 €"],["Vignette CH","40 €"],["Bouffe","350 €"],["Imprévus","200 €"]],
+ nat:88,bud:80,conf:65,glob:78,pros:"Ultra-proche (~3h30) · Alpes + rivière · psy/forest/darkpsy = top fit · pas cher",cons:"Historique d'annulations (annulé 2025) · édition 2026 à confirmer",
+ warn:"Dates 2026 estimées + 2 annulations passées — VÉRIFIER l'édition sur le site officiel avant de t'engager.",lineup:"(passé) Hilight Tribe · Ajja · Technical Hitch · Talamasca · Morten Granau",src:"shankrafestival.org",url:"https://shankrafestival.org/"},
+
+{n:"Noisily Festival",c:"🇬🇧",r:"Barkestone Wood, Leicestershire",gps:[52.91,-0.83],date:"~9–12 juil (est.)",month:"Juillet",ds:9,dur:4,season:"été",venue:"outdoor",rt:1900,h:10.5,et:"2",
+ bk:{psy:30,techno:30,bass:15,dnb:10,house:5,forest:5,other:5},swim:"non",swimT:"aucune",com:"faible",size:"<5 000",scene:["Psytrance","Techno","Bass"],cat:[],heat:false,sleep:"Camping inclus (18+)",risk:"élevé",
+ cadre:"Forêt ancienne (Barkestone Wood), underground/holistique, 3 scènes + venues cachés",meteo:"jour 18–23°C / nuit 10–14°C · variable, averses probables",
+ price:"~210€/pers",tot:"~1 560 €",budget:[["Billets (2)","420 €"],["Camping","incl"],["Essence","361 €"],["Manche","250 €"],["Bouffe","280 €"],["Imprévus","250 €"]],
+ nat:70,bud:55,conf:65,glob:64,pros:"Forêt + underground · mix psy/techno/bass · anti-mainstream",cons:"Loin (UK, ~10h + Manche) · pas de baignade · sold-out rapide",
+ warn:"Dates 2026 estimées (2025 = 10–13 juil) · billets partent vite · conduite à gauche + Manche.",lineup:"Sélection underground techno/psy/bass (têtes d'affiche à venir)",src:"noisilyfestival.com",url:"https://www.noisilyfestival.com/"},
+
+{n:"Dimensions Festival",c:"🇭🇷",r:"Tisno, The Garden Resort",gps:[43.80,15.64],date:"27–31 août",month:"Août",ds:27,dur:5,season:"été",venue:"outdoor",rt:2100,h:11,et:"1-2",
+ bk:{house:35,techno:30,other:15,bass:10,dub:5,dnb:5},swim:"oui",swimT:"mer/site/✅/à-pied",com:"moyen",size:"moyen",scene:["House","Techno","Electro/Disco"],cat:[],heat:true,sleep:"Camping sur site · apparts/hôtels Tisno 10min",risk:"moyen",
+ cadre:"Plage + crique adriatique, boat parties + Barbarella's, 150+ artistes",meteo:"jour 27–32°C / nuit 19–23°C · sec, ensoleillé · mer ~25°C",
+ price:"~200€/pers",tot:"~1 750 €",budget:[["Billets (2)","400 €"],["Logement","200 €"],["Essence","399 €"],["Péages","150 €"],["Bouffe","350 €"],["Imprévus","250 €"]],
+ nat:80,bud:45,conf:80,glob:60,pros:"Mer/plage + baignade · sound system irréprochable · cadre top",cons:"Quasi pas de DnB/psy — house/techno/disco dominant · loin",
+ warn:"Fit musical faible avec tes goûts (house/techno dominants).",lineup:"Helena Hauff · Fumiya Tanaka · DMX Krew · DJ Storm · Detroit In Effect",src:"dimensionsfestival.com",url:"https://dimensionsfestival.com/"},
+
+{n:"Nature One",c:"🇩🇪",r:"Kastellaun (base Pydna), Rhénanie-Palatinat",gps:[50.07,7.45],date:"30 juil–2 août",month:"Juillet",ds:30,dur:4,season:"été",venue:"outdoor",rt:1200,h:6.5,et:"1",
+ bk:{techno:35,other:30,house:15,dnb:10,acid:5,melodic:5},swim:"non",swimT:"aucune",com:"élevé",size:"très grand (dizaines de milliers)",scene:["Techno","Trance/Hardstyle","DnB"],cat:[],heat:false,sleep:"Immenses zones camping, sanitaires/parkings organisés",risk:"faible",
+ cadre:"Ancienne base de missiles (bunkers + champs) — industriel, 4 scènes + 20 floors",meteo:"jour 23–29°C / nuit 13–17°C · variable",
+ price:"~150–180€/pers",tot:"~1 100 €",budget:[["Billets (2)","330 €"],["Camping","incl"],["Essence","228 €"],["Péages","60 €"],["Bouffe","280 €"],["Imprévus","200 €"]],
+ nat:12,bud:60,conf:78,glob:50,pros:"Prod énorme · vraie scène DnB · camping/parking carrés",cons:"Très gros/commercial · beaucoup de hardstyle/mainstream · industriel · zéro nature",
+ warn:"Taille + commercialisation élevées, rave de masse (≠ underground/tribe).",lineup:"Labels techno/trance/DnB internationaux + hardstyle",src:"nature-one.de",url:"https://www.nature-one.de/"},
+
+{n:"Astropolis l'Été",c:"🇫🇷",r:"Brest + Manoir de Keroual (Finistère)",gps:[48.43,-4.55],date:"2–5 juillet",month:"Juillet",ds:2,dur:4,season:"été",venue:"outdoor",rt:2200,h:11,et:"2",
+ bk:{techno:40,house:25,acid:10,other:15,dub:5,melodic:5},swim:"proche",swimT:"mer/proche/à confirmer/voiture",com:"moyen",size:"~10–30 000 (multi-lieux)",scene:["Techno","House/Electro","Dub Corner"],cat:[],heat:false,sleep:"Hôtels/Airbnb Brest (pas de camping nature)",risk:"moyen",
+ cadre:"Festival urbain éclaté dans Brest + parc du Manoir de Keroual pour la grosse nuit",meteo:"jour 17–22°C / nuit 12–15°C · océanique, averses fréquentes",
+ price:"~90–110€/pers",tot:"~1 600 €",budget:[["Billets (2)","200 €"],["Hôtel 3 nuits","360 €"],["Essence","418 €"],["Péages","120 €"],["Bouffe","250 €"],["Imprévus","250 €"]],
+ nat:30,bud:58,conf:70,glob:52,pros:"Line-up techno/electro prestigieux · nouvelle Dub Corner · 30e édition culte",cons:"Très loin (Bretagne ~11h) · urbain · pas DnB/psy · pas camping/baignade nature",
+ warn:"Profil techno/house urbain, à l'opposé de l'angle nature/tribe/DnB.",lineup:"Laurent Garnier · Jeff Mills · Carl Craig & Mike Banks · Perc · Nathan Fake · Eris Drew",src:"astropolis.org",url:"https://astropolis.org"},
+
+{n:"Dour Festival",c:"🇧🇪",r:"Dour, Hainaut",gps:[50.40,3.78],date:"15–19 juillet",month:"Juillet",ds:15,dur:5,season:"été",venue:"outdoor",rt:1320,h:7,et:"1",
+ bk:{other:45,techno:20,dnb:10,bass:10,house:10,dub:5},swim:"non",swimT:"aucune",com:"moyen",size:"très grand (~250 000)",scene:["DnB/Bass","Techno","Dub Corner"],cat:[],heat:false,sleep:"Camping thématique + glamping, sanitaires/parking organisés",risk:"faible",
+ cadre:"Plaine/festival-park, 8–9 scènes (aussi rap/rock/pop)",meteo:"jour 19–24°C / nuit 12–16°C · variable, averses",
+ price:"~235€/pers",tot:"~1 380 €",budget:[["Billets (2)","470 €"],["Camping","incl"],["Essence","251 €"],["Péages","60 €"],["Bouffe","350 €"],["Imprévus","250 €"]],
+ nat:25,bud:55,conf:70,glob:55,pros:"Dub Corner + scènes électro pointues · vraie diversité · ~7h de Genève",cons:"Très grand public/éclectique (rap/pop/rock) · pas de nature/baignade",
+ warn:"Généraliste : l'électro qui t'intéresse est confinée à certaines scènes/corners.",lineup:"Pendulum (DnB) · Sammy Virji (UKG) · Amelie Lens (techno) + rap/pop",src:"dourfestival.eu",url:"https://www.dourfestival.eu/en/"},
+
+{n:"PSYLÂN — Alien Paradise",c:"🇳🇱",r:"Zeewolde, Flevoland",gps:[52.33,5.54],date:"4–6 septembre",month:"Septembre",ds:4,dur:3,season:"arrière-saison",venue:"outdoor",rt:1600,h:8.5,et:"1-2",
+ bk:{psy:50,fullon:20,darkpsy:10,forest:10,other:10},swim:"proche",swimT:"lac/proche/à confirmer/voiture",com:"faible",size:"petit-moyen",scene:["Psytrance","Full-On"],cat:[],heat:false,sleep:"Camping sur site",risk:"faible",
+ cadre:"Nature/plaine boisée des polders néerlandais",meteo:"jour 17–22°C / nuit 10–14°C · variable",
+ price:"~80€/pers",tot:"~900 €",budget:[["Billets (2)","160 €"],["Camping","incl"],["Essence","304 €"],["Péages","60 €"],["Bouffe","200 €"],["Imprévus","180 €"]],
+ nat:65,bud:80,conf:60,glob:70,pros:"Petit/underground · psy pur · prix doux",cons:"Loin (~8–9h) · petit · infos limitées",
+ warn:"",lineup:"n/c (scène psy NL)",src:"psylan.frl",url:"https://psylan.frl/"}
+];
+F.forEach(f=>{f.swimType=f.swimT.split('/')[0];f.doy=(MO[f.month]||181)+f.ds;f.doyEnd=f.doy+f.dur-1;});
+
+const GENRES=STY.map(([k,l])=>[k,l]);
+const CATS=[
+['hyb','🎚 Hybride',f=>Object.values(f.bk).filter(v=>v>=15).length>=3],
+['swim','🌊 Baignade',f=>f.swim==='oui'],
+['near','📍 Proche (≤1100 km)',f=>f.rt<=1100],
+['cheap','💶 Petit budget',f=>numBud(f.tot)<=1200],
+['nocom','🌲 Non commercial',f=>f.com==='faible'],
+['indoor','🏛 Indoor / city',f=>f.venue==='indoor']];
+const FAMS=GENRES;
+const sc=v=>v>=80?"--good":v>=60?"--mid":"--bad";
+const numBud=t=>{const m=(t.match(/\d[\d  ]*/g)||[]).map(s=>+s.replace(/[  ]/g,''));return m.length?Math.max(...m):9999;};
+
+const state={q:"",month:"",season:"",venue:"",swim:"",com:"",starf:"",sort:"match",dist:4000,bud:2700,matchMin:0,genres:new Set(),cats:new Set(),sel:new Set(),pinned:[],ratings:{},ratedOnly:false,calMode:0,calView:"all",mapSize:0,calDateS:null,calDateE:null,calSelStep:0,activeMarker:null,
+  profiles:[{name:"Moi",w:JSON.parse(JSON.stringify(W0.toi))}],prof:0};
+
+function compatW(f,w){let s=0;for(const k in f.bk)s+=f.bk[k]*(w[k]||0);return Math.round(s/10);}
+function compatOf(f){if(state.prof==='avg'){if(!state.profiles.length)return 0;let s=0;state.profiles.forEach(p=>s+=compatW(f,p.w));return Math.round(s/state.profiles.length);}return compatW(f,(state.profiles[state.prof]||state.profiles[0]).w);}
+
+function save(){try{localStorage.setItem('fest26',JSON.stringify({theme:document.documentElement.dataset.theme,profiles:state.profiles,prof:state.prof,pinned:state.pinned,sel:[...state.sel],ratings:state.ratings}));}catch(e){}}
+function load(){let d=null;if(location.hash.length>3){try{d=JSON.parse(decodeURIComponent(location.hash.slice(1)));}catch(e){}}if(!d){try{d=JSON.parse(localStorage.getItem('fest26')||'null');}catch(e){}}if(d){if(d.theme)document.documentElement.dataset.theme=d.theme;if(Array.isArray(d.profiles)&&d.profiles.length&&d.profiles[0].w&&('neuro' in d.profiles[0].w)){state.profiles=d.profiles;if(d.prof!==undefined)state.prof=d.prof;}if(Array.isArray(d.pinned))state.pinned=d.pinned;if(Array.isArray(d.sel))state.sel=new Set(d.sel);if(d.ratings)state.ratings=d.ratings;}}
+load();
+
+// chips
+const gC=document.getElementById('genreChips');
+GENRES.forEach(([k,l])=>{const e=document.createElement('div');e.className='chip';e.textContent=l;e.style.setProperty('--chip-c',STYLE[k].c);e.onclick=()=>{e.classList.toggle('on');state.genres.has(k)?state.genres.delete(k):state.genres.add(k);render();};gC.appendChild(e);});
+const sl=document.getElementById('styleLegend');STY.forEach(([k,l,t,p,c])=>{const e=document.createElement('div');e.className='leg-row';e.innerHTML='<span class="sw" style="background:'+c+'"></span>'+l;sl.appendChild(e);});
+const cC=document.getElementById('catChips');
+CATS.forEach(([k,l])=>{const e=document.createElement('div');e.className='chip cat';e.textContent=l;e.onclick=()=>{e.classList.toggle('on');state.cats.has(k)?state.cats.delete(k):state.cats.add(k);render();};cC.appendChild(e);});
+
+// profils multi-personnes
+function renderProfiles(){
+  const tabs=document.getElementById('profTabs'),nameInp=document.getElementById('profName'),wrap=document.getElementById('weightWrap'),note=document.getElementById('profNote');
+  tabs.innerHTML=state.profiles.map((p,i)=>'<button class="ptab'+(state.prof===i?' on':'')+'" data-i="'+i+'">'+p.name+(state.profiles.length>1?'<span class="px" data-x="'+i+'">×</span>':'')+'</button>').join('')
+    +'<button class="ptab'+(state.prof==='avg'?' on':'')+'" data-i="avg">Moyenne</button>'
+    +'<button class="ptab add" data-add="1">＋ personne</button>';
+  tabs.querySelectorAll('.ptab[data-i]').forEach(b=>b.onclick=e=>{if(e.target.classList.contains('px'))return;state.prof=b.dataset.i==='avg'?'avg':+b.dataset.i;save();renderProfiles();render();});
+  tabs.querySelectorAll('.px').forEach(x=>x.onclick=e=>{e.stopPropagation();const i=+x.dataset.x;state.profiles.splice(i,1);if(state.prof!=='avg'&&state.prof>=state.profiles.length)state.prof=state.profiles.length-1;save();renderProfiles();render();});
+  tabs.querySelector('[data-add]').onclick=()=>{state.profiles.push({name:'Personne '+(state.profiles.length+1),w:JSON.parse(JSON.stringify(W0.toi))});state.prof=state.profiles.length-1;save();renderProfiles();render();};
+  if(state.prof==='avg'){nameInp.style.display='none';wrap.innerHTML='';note.textContent='Compatibilité = moyenne des '+state.profiles.length+' profil(s). Édite chaque personne via ses onglets.';return;}
+  nameInp.style.display='';const p=state.profiles[state.prof];nameInp.value=p.name;
+  nameInp.oninput=()=>{p.name=nameInp.value||('Personne '+(state.prof+1));save();};
+  nameInp.onchange=()=>renderProfiles();
+  note.textContent='Règle l’importance de chaque style (0–10) pour ce profil. La compatibilité se recalcule en direct.';
+  wrap.innerHTML=GENRES.map(([k,l])=>'<label class="ctl slider">'+l+' <span class="v" id="w_'+k+'">'+(+p.w[k]).toFixed(1)+'</span></label><input type="range" min="0" max="10" step="0.5" value="'+p.w[k]+'" data-w="'+k+'">').join('');
+  wrap.querySelectorAll('input[data-w]').forEach(inp=>inp.oninput=()=>{p.w[inp.dataset.w]=+inp.value;document.getElementById('w_'+inp.dataset.w).textContent=(+inp.value).toFixed(1);save();render();});
+}
+renderProfiles();
+
+const bind=(id,k,n)=>{const e=document.getElementById(id);e.oninput=()=>{state[k]=n?+e.value:e.value;if(id!=='sort')e.classList.toggle('has-val',!!e.value);render();};};
+['q','month','season','venue','swim','com','starf','sort'].forEach(id=>bind(id,id));
+['month','season','venue','swim','com','starf'].forEach(id=>{const e=document.getElementById(id);if(e&&state[id])e.classList.add('has-val');});
+document.getElementById('dist').oninput=e=>{state.dist=+e.target.value;document.getElementById('distV').textContent=state.dist>=4000?'∞':state.dist+'km';render();};
+document.getElementById('bud').oninput=e=>{state.bud=+e.target.value;document.getElementById('budV').textContent=state.bud>=2700?'∞':state.bud+'€';render();};
+document.getElementById('matchMin').oninput=e=>{state.matchMin=+e.target.value;document.getElementById('matchV').textContent=state.matchMin;render();};
+document.getElementById('reset').onclick=()=>{try{localStorage.removeItem('fest26');}catch(e){}location.hash='';location.reload();};
+
+function pass(f){
+  if(state.ratedOnly&&!state.ratings[f.n])return false;
+  if(state.starf&&(state.ratings[f.n]||0)!==+state.starf)return false;
+  if(state.month&&f.month!==state.month)return false;
+  if(state.season&&f.season!==state.season)return false;
+  if(state.venue&&f.venue!==state.venue)return false;
+  if(state.swim&&f.swim!==state.swim)return false;
+  if(state.com&&f.com!==state.com)return false;
+  if(f.rt>state.dist)return false;
+  if(numBud(f.tot)>state.bud)return false;
+  if(compatOf(f)<state.matchMin)return false;
+  if(state.genres.size&&![...state.genres].some(k=>(f.bk[k]||0)>=8))return false;
+  if(state.cats.size&&![...state.cats].some(k=>{const c=CATS.find(x=>x[0]===k);return c&&c[2](f);}))return false;
+  if(state.q){const h=(f.n+f.c+f.r+f.scene.join(' ')+f.lineup+f.cadre+f.pros).toLowerCase();if(!h.includes(state.q.toLowerCase()))return false;}
+  return true;
+}
+const sorter=(a,b)=>({global:()=>b.glob-a.glob,dist:()=>a.rt-b.rt,budget:()=>numBud(a.tot)-numBud(b.tot),date:()=>a.doy-b.doy,match:()=>compatOf(b)-compatOf(a),stars:()=>((state.ratings[b.n]||0)-(state.ratings[a.n]||0))||(b.glob-a.glob)}[state.sort]());
+
+let map,markers=[],routeLine,activeList=[],tileLayer;
+const GVA=[46.20,6.14];
+const TILES=[
+  {n:'Positron', url:'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',          sub:'abcd',max:19,attr:'© OSM © CARTO'},
+  {n:'Voyager',  url:'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', sub:'abcd',max:19,attr:'© OSM © CARTO'},
+  {n:'OSM',      url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',                       sub:'abc', max:19,attr:'© OpenStreetMap'},
+];
+function setTile(idx){
+  if(tileLayer)map.removeLayer(tileLayer);
+  const t=TILES[idx];
+  tileLayer=L.tileLayer(t.url,{attribution:t.attr,subdomains:t.sub,maxZoom:t.max});
+  tileLayer.addTo(map);
+  const btn=document.getElementById('tileToggle');
+  if(btn)btn.textContent='⊞ '+t.n+' '+(idx+1)+'/'+TILES.length;
+}
+function initMap(){map=L.map('map',{scrollWheelZoom:true}).setView([47.5,11],4.4);
+  setTile(0);
+  setTimeout(()=>map.invalidateSize(),300);
+  L.circleMarker(GVA,{radius:7,color:'#fff',fillColor:'#ff3ea5',fillOpacity:1,weight:2}).addTo(map).bindTooltip('<div class="pop"><b>Genève</b><span class="l">point de départ</span></div>',{direction:'top',opacity:1,className:'festip'});}
+function domFam(f){let m='other',v=-1;for(const k in f.bk)if(f.bk[k]>v){v=f.bk[k];m=k;}return m;}
+function drawMarkers(list){markers.forEach(m=>map.removeLayer(m));markers=[];
+  const isDark=document.documentElement.dataset.theme==='dark';
+  const borderCol=isDark?'rgba(255,255,255,.85)':'rgba(0,0,0,.75)';
+  list.forEach(f=>{const col=STYLE[domFam(f)].c||'#c6ff3a';const mt=compatOf(f);
+    const isActive=state.activeMarker===f.n;
+    const sz=isActive?18:12;
+    const icon=L.divIcon({
+      html:'<div style="width:'+sz+'px;height:'+sz+'px;border-radius:50%;background:'+col+';border:2px solid '+(isActive?'rgba(255,255,255,.9)':borderCol)+';box-shadow:'+(isActive?'0 0 0 3px rgba(255,62,165,.55)':'none')+';opacity:'+(isActive?1:.92)+';box-sizing:border-box"></div>',
+      className:'fmark-wrap',iconSize:[sz,sz],iconAnchor:[sz/2,sz/2]
+    });
+    const mk=L.marker(f.gps,{icon,zIndexOffset:isActive?1000:0}).addTo(map);
+    const activeTip=isActive?'<span class="sel-tip">→ trajet affiché — clic pour fermer</span>':'<span class="sel-tip hint">clic pour afficher le trajet vol d\'oiseau</span>';
+    const tipHtml='<div class="pop"><b>'+f.n+'</b><span class="l">'+f.c+' · '+f.date+' · '+f.dur+'j</span><span class="l">🎧 '+f.scene.join(' · ')+'</span><span class="l">⭐ compatibilité '+mt+'  ·  🚗 '+f.rt+' km A/R  ·  🌊 '+f.swimT+'</span>'+activeTip+'</div>';
+    mk.bindTooltip(tipHtml,{direction:'top',sticky:!isActive,permanent:isActive,opacity:1,className:'festip'});
+    mk.on('click',()=>markerPick(f));markers.push(mk);});}
+function markerPick(f){
+  if(state.activeMarker===f.n){
+    state.activeMarker=null;
+    if(routeLine){map.removeLayer(routeLine);routeLine=null;}
+  }else{
+    state.activeMarker=f.n;
+    route(f.gps);
+  }
+  drawMarkers(activeList);
+}
+function route(dest){if(routeLine)map.removeLayer(routeLine);routeLine=L.polyline([GVA,dest],{color:'#ff3ea5',weight:3.5,dashArray:'7 5',opacity:.95}).addTo(map);}
+
+function render(){
+  let list=F.filter(pass).sort(sorter);
+  document.getElementById('cnt').textContent=list.length;
+  activeList=list;
+  if(state.activeMarker&&!list.some(f=>f.n===state.activeMarker)){state.activeMarker=null;if(routeLine){map.removeLayer(routeLine);routeLine=null;}}
+  if(map)drawMarkers(list);
+  const g=document.getElementById('grid');g.innerHTML='';
+  if(!list.length){g.innerHTML='<div class="empty">Aucun festival ne correspond. ↺ Réinitialise.</div>';updateCmp();return;}
+  list.forEach(f=>{const b=f.bk,mt=compatOf(f),seg=k=>b[k]>0?'<i style="width:'+b[k]+'%;background:'+STYLE[k].c+'"></i>':'';
+    const rr=state.ratings[f.n]||0;
+    const starHtml='<div class="stars" data-stars="'+f.n+'">'+[1,2,3,4,5].map(i=>'<span data-r="'+i+'" class="'+(i<=rr?'on':'')+'">★</span>').join('')+'</div>';
+    const swimBadge=f.swim==='oui'?'<span class="badge b-cyan">🌊 '+f.swimT+'</span>':f.swim==='proche'?'<span class="badge b-cyan">🌊 proche</span>':'<span class="badge b-red">🚫 pas de baignade</span>';
+    const riskBadge=f.risk==='élevé'?'<span class="badge b-red">🎟 risque '+f.risk+'</span>':f.risk==='moyen'?'<span class="badge b-amber">🎟 '+f.risk+'</span>':'';
+    const heatBadge=f.heat?'<span class="badge b-amber">🔥 chaleur</span>':'';
+    const card=document.createElement('div');card.className='card'+(state.sel.has(f.n)?' sel':'')+(rr?' rated':'');card.dataset.fn=f.n;
+    card.innerHTML='<div class="cbx" data-sel="'+f.n+'">✓</div>'+
+      '<div class="cardtop" data-open>'+starHtml+'<div class="fname">'+f.n+'</div><div class="floc">'+f.c+' '+(CN[f.c]||'')+' · '+f.r+'</div><div class="fdate">📅 '+f.date+' <span class="tag-conf">'+(f.venue==='indoor'?'INDOOR':'CONFIRMÉ')+'</span></div></div>'+
+      '<div class="scores">'+
+        '<div class="score"><div class="sv" style="color:'+cv(sc(mt))+'">'+mt+'</div><div class="sl">Compatibilité</div></div>'+
+        '<div class="score"><div class="sv" style="color:'+cv(sc(f.nat))+'">'+f.nat+'</div><div class="sl">Nature</div></div>'+
+        '<div class="score"><div class="sv" style="color:'+cv(sc(f.bud))+'">'+f.bud+'</div><div class="sl">Budget</div></div>'+
+        '<div class="score"><div class="sv" style="color:'+cv(sc(f.glob))+'">'+f.glob+'</div><div class="sl">Global</div></div></div>'+
+      '<div class="barwrap"><div class="bartitle"><b>'+f.scene.join(' · ')+'</b></div><div class="gbar">'+STY.map(([k])=>seg(k)).join('')+'</div></div>'+
+      '<div class="meteo">🌡️ '+f.meteo+'</div>'+
+      '<div class="meta">'+swimBadge+'<span class="badge">🚗 '+f.rt+'km · '+f.h+'h · '+f.et+' ét.</span><span class="badge">⏱ '+f.dur+'j</span><span class="badge">'+(f.venue==='indoor'?'🏛 indoor':'🌲 outdoor')+'</span><span class="badge '+(f.com==='faible'?'b-lime':f.com==='élevé'?'b-red':'b-amber')+'">📣 '+f.com+'</span>'+heatBadge+riskBadge+'<span class="badge">💶 '+f.tot+'</span></div>'+
+      '<div class="detail"><div class="detail-in">'+
+        '<div class="dsect"><h4>Cadre</h4><p class="muted">'+f.cadre+'</p></div>'+
+        '<div class="dsect"><h4>Baignade</h4><p class="muted">'+f.swimT+'</p></div>'+
+        '<div class="dsect"><h4>🛏 Couchage (indicatif)</h4><p class="muted">'+f.sleep+'</p></div>'+
+        '<div class="dsect"><h4>Budget 2 pers</h4><table class="budget-tbl">'+f.budget.map(r=>'<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('')+'<tr><td style="color:'+cv('--accent')+';border:none;padding-top:6px">TOTAL</td><td style="color:'+cv('--accent')+';border:none;padding-top:6px;font-weight:700">'+f.tot+'</td></tr></table></div>'+
+        '<div class="dsect prosc"><div><h4 style="color:var(--lime)">+ Forts</h4><p class="pro">'+f.pros+'</p></div><div><h4 style="color:var(--bad)">− Faibles</h4><p class="con">'+f.cons+'</p></div></div>'+
+        (f.warn?'<div class="warn">⚠ '+f.warn+'</div>':'')+
+        '<details><summary>🎧 Line-up</summary><p>'+f.lineup+'</p></details>'+
+        '<div class="dsect" style="margin-top:10px"><a class="srclink" href="'+f.url+'" target="_blank" rel="noopener">↗ '+f.src+'</a></div>'+
+      '</div></div>';
+    g.appendChild(card);});
+  g.querySelectorAll('[data-open]').forEach(el=>el.onclick=e=>{if(e.target.closest('.cbx')||e.target.closest('.stars'))return;el.closest('.card').classList.toggle('open');});
+  g.querySelectorAll('.cbx').forEach(el=>el.onclick=e=>{e.stopPropagation();const n=el.dataset.sel;state.sel.has(n)?state.sel.delete(n):state.sel.add(n);save();render();updateCmp();});
+  g.querySelectorAll('.stars span[data-r]').forEach(s=>s.onclick=e=>{e.stopPropagation();const w=s.closest('.stars'),n=w.dataset.stars,r=+s.dataset.r;state.ratings[n]=(state.ratings[n]===r?0:r);if(!state.ratings[n])delete state.ratings[n];save();render();});
+  const rc=Object.keys(state.ratings).length,rt=document.getElementById('ratedToggle');if(rt){rt.textContent='★ Favoris ('+rc+')';rt.classList.toggle('on',state.ratedOnly);}
+  if(state.calMode>0){let cl=list;if(state.calView==='fav')cl=F.filter(f=>state.ratings[f.n]);else if(state.calView==='sel')cl=F.filter(f=>state.sel.has(f.n));document.getElementById('cal').innerHTML=buildCalendar(cl,state.calView==='all'?'browse':'compare');const cc=document.getElementById('calcount');if(cc)cc.textContent=(state.calView==='fav'?'favoris ★ — ':state.calView==='sel'?'comparés ☑ — ':'')+cl.length+' festivals';bindCalEvents();}
+  updateSectBadges();
+  updateCmp();
+}
+
+// COMPARE + COMBO
+function updateCmp(){const bar=document.getElementById('cmpbar');const sel=F.filter(f=>state.sel.has(f.n));
+  const totB=sel.reduce((s,f)=>s+numBud(f.tot),0);
+  document.getElementById('cmpcount').textContent='Comparer & planifier ('+sel.length+')'+(sel.length?' · Σ '+totB.toLocaleString('fr-FR')+'€':'');
+  bar.classList.toggle('show',sel.length>=1);}
+document.getElementById('cmpclear').onclick=()=>{state.sel.clear();save();render();};
+document.getElementById('cmpbar').onclick=e=>{if(e.target.id==='cmpclear')return;openCmp();};
+document.getElementById('modalX').onclick=()=>document.getElementById('modal').classList.remove('show');
+document.getElementById('modal').onclick=e=>{if(e.target.id==='modal')document.getElementById('modal').classList.remove('show');};
+
+function buildCalendar(list,mode){
+  if(!list.length)return '<div class="hidenote">Aucun festival à afficher (change le filtre ci-dessus).</div>';
+  const sd=[...list].sort((a,b)=>a.doy-b.doy);
+  const mn=Math.min(...sd.map(f=>f.doy)),mx=Math.max(...sd.map(f=>f.doyEnd)),days=Math.max(1,mx-mn+1);
+  const showNums=days<=46;
+  const moff=[['Juin',151],['Juil.',181],['Août',212],['Sept.',243],['Oct.',273],['Nov.',304],['',334]];
+  const dom=d=>{for(let i=0;i<moff.length-1;i++){if(d>moff[i][1]&&d<=moff[i+1][1])return d-moff[i][1];}return d-151;};
+  const mab=d=>{for(let i=0;i<moff.length-1;i++){if(d>moff[i][1]&&d<=moff[i+1][1])return moff[i][0];}return '';};
+  // monthIndex 0-based pour Date : Juin=5,Juil=6,Août=7,Sept=8,Oct=9,Nov=10
+  const moffWk=[[5,151],[6,181],[7,212],[8,243],[9,273],[10,304]];
+  const isWknd=d=>{for(let i=0;i<moffWk.length;i++){const mo=moffWk[i],next=moffWk[i+1];const ne=next?next[1]:334;if(d>mo[1]&&d<=ne){const dow=new Date(2026,mo[0],d-mo[1]).getDay();return dow===0||dow===6;}}return false;};
+  const interactive=mode!=='compare';
+  const rs=state.calDateS,re=state.calDateE,rstep=state.calSelStep;
+  const dlbl=d=>mab(d)+' '+dom(d);
+  let dn='';for(let d=mn;d<=mx;d++){const day=dom(d);let rc='';if(rs!==null&&re!==null){if(d===rs)rc=' rng-s';else if(d===re)rc=' rng-e';else if(d>rs&&d<re)rc=' rng-mid';}else if(rstep===1&&d===rs)rc=' rng-s';dn+='<i class="dnum'+(day===1?' mo':'')+(isWknd(d)?' wknd':'')+rc+'"'+(interactive?' data-doy="'+d+'"':'')+'>'+  (showNums?day:(day===1||d===mn?mab(d):''))+'</i>';}
+  let rngUI='';
+  if(interactive){
+    if(rstep===0)rngUI='<div class="cal-rng-area"><span class="cal-rng-hint">Cliquez une date dans l\'en-tête pour filtrer par période</span></div>';
+    else if(rstep===1&&rs!==null)rngUI='<div class="cal-rng-area"><span class="cal-rng-hint rng-active">📅 Début : '+dlbl(rs)+' — cliquez la date de fin (même date pour annuler)</span></div>';
+    else if(rstep===2&&rs!==null&&re!==null)rngUI='<div class="cal-rng-area"><div class="cal-rng-pill">📅 '+dlbl(rs)+' → '+dlbl(re)+'<span class="rp-x rng-clear-btn" title="Effacer la sélection">×</span></div><span class="cal-rng-hint" style="font-size:8.5px">Cliquez une date pour changer</span></div>';
+  }
+  const header='<div class="calhdr">'+rngUI+'<div class="cal-row hdr" style="margin-bottom:0"><div class="cal-name" style="color:var(--muted);font-size:9px">'+(showNums?'jour du mois →':'mois →')+'</div><div class="cal-track nums">'+dn+'</div></div></div>';
+  // overlay disponibilités (rendu avant les lignes de grille pour passer dessous)
+  const DISPO=[{doyS:201,doyE:207,c:'#c6ff3a33'},{doyS:194,doyE:200,c:'#ffb13a22'},{doyS:208,doyE:214,c:'#ffb13a22'}];
+  let gl='';
+  DISPO.forEach(({doyS,doyE,c})=>{const s=Math.max(mn,doyS),e=Math.min(mx,doyE);if(s>e)return;const x=(s-mn)/days*100,w=(e-s+1)/days*100;gl+='<i class="gl-dispo" style="left:'+x+'%;width:'+w+'%;background:'+c+'"></i>';});
+  for(let d=mn+1;d<=mx;d++){const x=(d-mn)/days*100;if(dom(d)===1)gl+='<i class="gl mo" style="left:'+x+'%"></i>';else if(d%7===5)gl+='<i class="gl wk" style="left:'+x+'%"></i>';}
+  const rows=sd.map(f=>{
+    const ov=mode==='compare'&&sd.some(g=>g!==f&&f.doy<=g.doyEnd&&g.doy<=f.doyEnd);
+    const col=ov?cv('--magenta'):STYLE[domFam(f)].c;
+    const isSel=state.sel.has(f.n);
+    const rr=state.ratings[f.n]||0;
+    const fn=f.n.replace(/"/g,'&quot;');
+    const stH='<span class="cal-mini-stars" data-stars="'+fn+'">'+[1,2,3,4,5].map(i=>'<i data-r="'+i+'" class="'+(i<=rr?'on':'')+'">★</i>').join('')+'</span>';
+    let cells='';for(let d=mn;d<=mx;d++){const lit=d>=f.doy&&d<=f.doyEnd;cells+='<i class="cell'+(isWknd(d)?' wknd':'')+'"'+(lit?' style="background:'+col+'"':'')+'>'+(lit&&showNums?dom(d):'')+'</i>';}
+    const isOut=interactive&&rstep===2&&rs!==null&&re!==null&&(f.doy>re||f.doyEnd<rs);
+    return '<div class="cal-row'+(isOut?' dim-out':'')+'" data-fn="'+fn+'"><div class="cal-name"><div class="cal-meta"><span class="cal-cbx-btn'+(isSel?' on':'')+'" data-sel="'+fn+'" title="Comparer">✓</span>'+stH+'</div><b>'+f.n+'</b><span>'+f.date+' · '+f.dur+'j</span></div><div class="cal-track">'+cells+'</div></div>';
+  }).join('');
+  const note=mode==='compare'
+    ?'1 case = 1 jour (n° du mois) · ligne accent = début de mois, ligne fine = semaine · <span style="color:var(--magenta)">rose</span> = chevauchement.'
+    :'1 case = 1 jour · ligne accent = début de mois, ligne fine = semaine · couleur = style dominant. Passe en Favoris/Comparés pour afficher les numéros de jour.';
+  return header+'<div class="cal-rows"><div class="cal-grid">'+gl+'</div>'+rows+'</div><div class="hidenote" style="margin-top:8px">📅 '+note+'</div>';
+}
+function openCmp(){const sel=F.filter(f=>state.sel.has(f.n));if(!sel.length)return;
+  // combo
+  const totB=sel.reduce((s,f)=>s+numBud(f.tot),0),totKm=sel.reduce((s,f)=>s+f.rt,0),totD=sel.reduce((s,f)=>s+f.dur,0);
+  let conflicts=[];for(let i=0;i<sel.length;i++)for(let j=i+1;j<sel.length;j++)if(sel[i].doy<=sel[j].doyEnd&&sel[j].doy<=sel[i].doyEnd)conflicts.push(sel[i].n+' ⚔ '+sel[j].n);
+  const travelD=sel.reduce((s,f)=>s+(f.h<=4?1:f.h<=9?2:3),0);const tripD=totD+travelD;
+  let v='';
+  if(conflicts.length)v='<div class="verdict ko">⚠ Chevauchement de dates : '+conflicts.join(' · ')+' — impossible de faire ces festivals ensemble.</div>';
+  else if(tripD>17)v='<div class="verdict ko">⚠ '+totD+' j de festival + ~'+travelD+' j de route ≈ '+tripD+' j > tes 17 j de congé. Retire-en un.</div>';
+  else v='<div class="verdict ok">✓ Faisable : '+totD+' j de festival + ~'+travelD+' j de route ≈ '+tripD+' j (≤ 17 j). Pas de conflit de dates.</div>';
+  const overB=totB>1500;
+  document.getElementById('comboBox').innerHTML=v+'<div class="combo">'+
+    '<div class="cb"><div class="cv" style="color:'+(overB?cv('--bad'):cv('--good'))+'">'+totB.toLocaleString('fr-FR')+'€</div><div class="cl">Budget cumulé 2p '+(overB?'(> 1500 cible)':'(≤ cible)')+'</div></div>'+
+    '<div class="cb"><div class="cv">'+totKm.toLocaleString('fr-FR')+'</div><div class="cl">km A/R cumulés</div></div>'+
+    '<div class="cb"><div class="cv">'+totD+'</div><div class="cl">jours de festival</div></div>'+
+    '<div class="cb"><div class="cv">'+sel.length+'</div><div class="cl">festivals sélectionnés</div></div></div>'+'<div class="tl">'+buildCalendar(sel,'compare')+'</div>';
+  // table
+  const rows=[['Pays',f=>f.c+' '+f.r,null],['Dates',f=>f.date,null],['Saison',f=>f.season,null],['Type',f=>f.venue,null],['Durée',f=>f.dur+' j',null],
+    ['Compatibilité',f=>compatOf(f),'hi'],['Nature',f=>f.nat,'hi'],['Budget (note)',f=>f.bud,'hi'],['Confort',f=>f.conf,'hi'],['Global',f=>f.glob,'hi'],
+    ['Distance A/R',f=>f.rt+' km','lo'],['Route',f=>f.h+'h · '+f.et+' ét.',null],['Budget total 2p',f=>f.tot,'lob'],
+    ['Baignade',f=>f.swimT,null],['🛏 Couchage',f=>f.sleep,null],['🎟 Risque billet',f=>f.risk,null],['Météo',f=>f.meteo,null],['Commercial',f=>f.com,null],
+    ['Drum & Bass %',f=>f.bk.dnb||0,'hi'],['Neurofunk %',f=>f.bk.neuro||0,'hi'],['Dub %',f=>f.bk.dub||0,'hi'],['Psytrance %',f=>f.bk.psy||0,null],['Acid %',f=>f.bk.acid||0,null],['Techno %',f=>f.bk.techno||0,null]];
+  let html='<tr><th></th>'+sel.map(f=>'<th>'+f.n+'</th>').join('')+'</tr>';
+  rows.forEach(([lbl,fn,dir])=>{let best=null,worst=null;
+    if(dir){const nums=sel.map(f=>dir==='lob'?numBud(f.tot):(dir==='lo'?f.rt:Number(fn(f))));if(dir==='hi'){best=Math.max(...nums);worst=Math.min(...nums);}else{best=Math.min(...nums);worst=Math.max(...nums);}}
+    html+='<tr><td class="rowlbl">'+lbl+'</td>'+sel.map(f=>{let cls='';if(dir){const nv=dir==='lob'?numBud(f.tot):(dir==='lo'?f.rt:Number(fn(f)));if(nv===best)cls='best';else if(nv===worst&&sel.length>2)cls='worst';}return '<td class="'+cls+'">'+fn(f)+'</td>';}).join('')+'</tr>';});
+  document.getElementById('cmpTbl').innerHTML=html;
+  document.getElementById('modal').classList.add('show');}
+
+// THEME / MAP / SHARE / BURGER
+document.getElementById('themeToggle').onclick=()=>{const h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark';save();render();};
+let _tileIdx=0;document.getElementById('tileToggle').onclick=()=>{_tileIdx=(_tileIdx+1)%TILES.length;setTile(_tileIdx);};
+function applyMap(){const m=document.getElementById('map'),b=document.getElementById('mapToggle');
+  if(state.mapSize===0){m.style.display='none';b.textContent='🗺️ Carte ＋';b.classList.remove('on');}
+  else{m.style.display='block';m.classList.toggle('full',state.mapSize===2);b.textContent='🗺️ Carte '+(state.mapSize===2?'−':'＋');b.classList.add('on');if(map)setTimeout(()=>map.invalidateSize(),140);}}
+document.getElementById('mapToggle').onclick=()=>{state.mapSize=(state.mapSize+1)%3;applyMap();};
+function applyCal(){const w=document.getElementById('calwrap'),b=document.getElementById('calToggle');
+  if(state.calMode===0){w.style.display='none';b.textContent='📅 Calendrier ＋';b.classList.remove('on');}
+  else{w.style.display='block';b.textContent='📅 Calendrier −';b.classList.add('on');render();}}
+document.getElementById('calToggle').onclick=()=>{state.calMode=state.calMode?0:1;applyCal();};
+document.querySelectorAll('#calViewSeg button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#calViewSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');state.calView=b.dataset.cv;render();});
+document.getElementById('ratedToggle').onclick=e=>{state.ratedOnly=!state.ratedOnly;e.currentTarget.classList.toggle('on',state.ratedOnly);render();};
+function toggleSidebar(force){const sb=document.getElementById('sidebar'),ol=document.getElementById('overlay');const open=force!==undefined?force:!sb.classList.contains('open');sb.classList.toggle('open',open);ol.classList.toggle('show',open);}
+document.getElementById('burger').onclick=()=>toggleSidebar();
+document.getElementById('overlay').onclick=()=>toggleSidebar(false);
+
+function bindCalEvents(){
+  const cal=document.getElementById('cal');if(!cal)return;
+  cal.querySelectorAll('.cal-cbx-btn').forEach(el=>el.onclick=e=>{
+    e.stopPropagation();const n=el.dataset.sel;
+    state.sel.has(n)?state.sel.delete(n):state.sel.add(n);
+    save();render();updateCmp();
+  });
+  cal.querySelectorAll('.cal-mini-stars i').forEach(s=>s.onclick=e=>{
+    e.stopPropagation();const w=s.closest('.cal-mini-stars'),n=w.dataset.stars,r=+s.dataset.r;
+    state.ratings[n]=(state.ratings[n]===r?0:r);
+    if(!state.ratings[n])delete state.ratings[n];
+    save();render();
+  });
+  // Date range picker
+  const numTrack=cal.querySelector('.cal-track.nums');
+  if(numTrack){
+    const dnums=[...numTrack.querySelectorAll('.dnum[data-doy]')];
+    numTrack.addEventListener('mouseleave',()=>{if(state.calSelStep===1)dnums.forEach(d=>d.classList.remove('rng-hover'));});
+    dnums.forEach(cell=>{
+      cell.addEventListener('mouseenter',()=>{
+        if(state.calSelStep!==1)return;
+        const hd=+cell.dataset.doy;
+        const s=Math.min(state.calDateS,hd),e=Math.max(state.calDateS,hd);
+        dnums.forEach(d=>{const doy=+d.dataset.doy;d.classList.toggle('rng-hover',doy>s&&doy<e);});
+      });
+      cell.addEventListener('click',e=>{
+        e.stopPropagation();
+        const doy=+cell.dataset.doy;
+        if(state.calSelStep===0){
+          state.calDateS=doy;state.calSelStep=1;render();
+        } else if(state.calSelStep===1){
+          if(doy===state.calDateS){state.calDateS=null;state.calSelStep=0;}
+          else{const a=Math.min(state.calDateS,doy),b=Math.max(state.calDateS,doy);state.calDateS=a;state.calDateE=b;state.calSelStep=2;}
+          render();
+        } else {
+          // Step 2: start a fresh selection
+          state.calDateS=doy;state.calDateE=null;state.calSelStep=1;render();
+        }
+      });
+    });
+    const clrBtn=cal.querySelector('.rng-clear-btn');
+    if(clrBtn)clrBtn.addEventListener('click',e=>{e.stopPropagation();state.calDateS=null;state.calDateE=null;state.calSelStep=0;render();});
+  }
+}
+
+function getActiveFiltersCount(){
+  let n=0;
+  if(state.q&&state.q.trim())n++;
+  if(state.month)n++;if(state.season)n++;if(state.venue)n++;
+  if(state.swim)n++;if(state.com)n++;if(state.starf)n++;
+  if(state.dist<4000)n++;if(state.bud<2700)n++;if(state.matchMin>0)n++;
+  n+=state.genres.size;n+=state.cats.size;
+  return n;
+}
+
+function updateSectBadges(){
+  const fc=getActiveFiltersCount();
+  const fb=document.getElementById('badge-filtres');
+  if(fb){fb.textContent=fc||'';fb.classList.toggle('show',fc>0);}
+  const qb=document.getElementById('badge-search');
+  const hasQ=!!(state.q&&state.q.trim());
+  if(qb){qb.textContent=hasQ?'1':'';qb.classList.toggle('show',hasQ);}
+}
+
+document.querySelectorAll('.sb-toggle').forEach(h=>h.onclick=()=>h.closest('.sb-sect').classList.toggle('collapsed'));
+
+initMap();render();applyMap();applyCal();
+</script>
+</body>
+</html>
